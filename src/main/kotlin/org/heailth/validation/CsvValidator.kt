@@ -70,10 +70,6 @@ class CsvValidator(private val config: ConfigLoader) {
                         line = line.substring(1)
                     }
                     
-                    // Simple heuristic: If first non-empty line has no commas, it's unlikely to be a valid header
-                    // or if it has commas, we'll check if it matches expected headers later.
-                    // But if it's just raw data like "1001,2025-01-01...", it might look like a header to CSVParser.
-                    
                     headerLine = line
                     if (!isJsonOutput && logger.isDebugEnabled) logger.debug("Potential header found on line {}: {}", lineCount, headerLine)
                     reader.reset() // Positioned AT the header line
@@ -102,13 +98,10 @@ class CsvValidator(private val config: ConfigLoader) {
                 }
                 headerResult.actualHeaders.forEach { report.addFoundHeader(it) }
 
-                // Determine if header row is present based on whether we matched any required columns
-                // or if the first line was definitely not a header.
                 if (headerMap == null || headerMap.isEmpty() || headerResult.requiredToActual.size < (reqCols.size / 2)) {
                     if (!isJsonOutput && logger.isDebugEnabled) logger.debug("headerMap is null/empty or too few required columns matched. Matched: {}, Required: {}. Found headers: {}", headerResult.requiredToActual.size, reqCols.size, headerResult.actualHeaders)
                     
                     report.isHeaderRowPresent = false
-                    // We return empty results to signal header missing
                     return ValidationResult(report, acceptedRows)
                 }
 
@@ -152,7 +145,7 @@ class CsvValidator(private val config: ConfigLoader) {
             }
         }
 
-        // 3. Write Cleaned CSV
+        // 3. Write Cleaned CSV - MUST prioritize requested headers order but include all data
         if (outputPath != null) {
             if (acceptedRows.isNotEmpty()) {
                 writeCleanedCsv(acceptedRows, outputPath, reqCols)
@@ -187,13 +180,19 @@ class CsvValidator(private val config: ConfigLoader) {
     private fun writeCleanedCsv(rows: List<Map<String, String>>, outputPath: String, requiredColumns: List<String>? = null) {
         if (rows.isEmpty()) return
 
-        val headers = (requiredColumns ?: config.csvRequiredColumns).toTypedArray()
-        val format = CSVFormat.DEFAULT.builder().setHeader(*headers).build()
+        // 1. Collect all potential headers from normalized rows to ensure we don't lose custom columns
+        // but prioritize required columns order if provided.
+        val baseHeaders = requiredColumns ?: config.csvRequiredColumns
+        val allRowKeys = rows.flatMap { it.keys }.distinct()
+        val extraHeaders = allRowKeys.filter { it !in baseHeaders }
+        val finalHeaders = (baseHeaders + extraHeaders).toTypedArray()
+
+        val format = CSVFormat.DEFAULT.builder().setHeader(*finalHeaders).build()
 
         Files.newBufferedWriter(Paths.get(outputPath)).use { writer ->
             CSVPrinter(writer, format).use { printer ->
                 for (row in rows) {
-                    val values = headers.map { row[it] }
+                    val values = finalHeaders.map { row[it] ?: "" }
                     printer.printRecord(values)
                 }
             }

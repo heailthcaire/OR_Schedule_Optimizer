@@ -224,17 +224,17 @@ export function DataIngestion({
 
                    <button 
                      onClick={onClean}
-                     disabled={!isValidated || !hasData || isCleaned || (validationReport && validationReport.totalErrorRows === 0)}
+                     disabled={!isValidated || (!hasData && !crnaFileName) || isCleaned}
                      className={`flex flex-row items-center justify-center p-4 rounded-2xl border-2 transition-all space-x-4 ${
                        isCleaned 
                         ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-600 dark:text-emerald-300' 
-                        : !isValidated || !hasData || (validationReport && validationReport.totalErrorRows === 0)
+                        : !isValidated || (!hasData && !crnaFileName)
                           ? 'opacity-30 cursor-not-allowed bg-[var(--card-bg)] border-[var(--border-color)] text-[var(--text-main)]'
                           : 'bg-[var(--card-bg)] border-[var(--border-color)] text-[var(--text-main)] hover:border-blue-500 hover:bg-blue-500/10'
                      }`}
                    >
                      <ShieldCheck size={24} />
-                     <span className="text-xs font-black uppercase tracking-widest">Create Backup File</span>
+                     <span className="text-xs font-black uppercase tracking-widest">Create Clean File</span>
                    </button>
                 </div>
 

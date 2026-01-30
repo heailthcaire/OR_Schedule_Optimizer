@@ -265,26 +265,30 @@ function App() {
                     <TrendingUp size={20} className="text-blue-600" />
                     <span>Executive Summary: Recovery Opportunity</span>
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div className="p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800 text-center">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800 text-center flex flex-col justify-center">
                       <div className="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 mb-1">Hard Savings: Labor</div>
                       <div className="text-3xl font-black text-emerald-500">${(
                         Math.round(((globalMetrics?.extraCrnaHours || 0) * (config.financials.crnaHourRate || 175) + (globalMetrics?.anesthesiaSavings || 0) * (config.financials.anesthesiologistRate || 3500)) * (globalMetrics?.annualizationFactor || 12) / 1000000)
                       ).toFixed(2)}M</div>
+                      <div className="mt-2 pt-2 border-t border-emerald-100 dark:border-emerald-800/50">
+                        <div className="text-[10px] font-black uppercase text-emerald-600/60 dark:text-emerald-400/60">CRNA Hours Saved</div>
+                        <div className="text-xl font-black text-emerald-600 dark:text-emerald-400">{Math.round(globalMetrics?.extraCrnaHours || 0).toLocaleString()}</div>
+                      </div>
                     </div>
-                    <div className="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 text-center">
+                    <div className="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 text-center flex flex-col justify-center">
                       <div className="text-[10px] font-black uppercase text-blue-600 dark:text-blue-400 mb-1">Soft Savings: Assets</div>
                       <div className="text-3xl font-black text-blue-500">${(
                         Math.round(((globalMetrics?.roomsSaved || 0) * (config.financials.costPerOrDay || 1500)) * (globalMetrics?.annualizationFactor || 12) / 1000000)
                       ).toFixed(2)}M</div>
+                      <div className="mt-2 pt-2 border-t border-blue-100 dark:border-blue-800/50">
+                        <div className="text-[10px] font-black uppercase text-blue-600/60 dark:text-blue-400/60">OR-Days Saved</div>
+                        <div className="text-xl font-black text-blue-600 dark:text-blue-400">{Math.round(globalMetrics?.roomsSaved || 0)}</div>
+                      </div>
                     </div>
-                    <div className="p-6 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700 text-center">
-                      <div className="text-[10px] font-black uppercase text-slate-400 mb-1">OR-Days Saved</div>
-                      <div className="text-3xl font-black text-slate-600 dark:text-slate-300">{Math.round(globalMetrics?.roomsSaved || 0)}</div>
-                    </div>
-                    <div className="p-6 bg-blue-600 rounded-2xl text-white text-center shadow-xl">
+                    <div className="p-6 bg-blue-600 rounded-2xl text-white text-center shadow-xl flex flex-col justify-center">
                       <div className="text-[10px] font-black uppercase text-blue-100 mb-1">Total Strategic ROI</div>
-                      <div className="text-3xl font-black">${(
+                      <div className="text-4xl font-black">${(
                         (Math.round(((globalMetrics?.extraCrnaHours || 0) * (config.financials.crnaHourRate || 175) + (globalMetrics?.anesthesiaSavings || 0) * (config.financials.anesthesiologistRate || 3500)) * (globalMetrics?.annualizationFactor || 12) / 1000000) +
                         Math.round(((globalMetrics?.roomsSaved || 0) * (config.financials.costPerOrDay || 1500)) * (globalMetrics?.annualizationFactor || 12) / 1000000))
                       ).toFixed(2)}M</div>

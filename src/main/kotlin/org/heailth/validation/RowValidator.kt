@@ -129,6 +129,9 @@ class RowValidator(
             return ValidationOutcome(false, false, null, durationError)
         }
 
+        // Standardize output formats for Clean File
+        standardizeOutputFormats(normalizedData, vContext)
+
         // 4. Pluggable Validators (e.g., ICD-10)
         for (validator in pluggableValidators) {
             for (field in normalizedData.keys) {
@@ -149,6 +152,19 @@ class RowValidator(
         }
 
         return ValidationOutcome(true, corrected, normalizedData, null)
+    }
+
+    private fun standardizeOutputFormats(data: MutableMap<String, String>, vContext: ValidationContext) {
+        val dateFormat = config.getDateFormat()
+        val timeFormat = config.getTimeFormat()
+
+        vContext.dates.forEach { (field, date) ->
+            data[field] = date.format(java.time.format.DateTimeFormatter.ofPattern(dateFormat, java.util.Locale.US))
+        }
+
+        vContext.times.forEach { (field, time) ->
+            data[field] = time.format(java.time.format.DateTimeFormatter.ofPattern(timeFormat, java.util.Locale.US))
+        }
     }
 
     private fun validateDurations(data: MutableMap<String, String>, vContext: ValidationContext): String? {

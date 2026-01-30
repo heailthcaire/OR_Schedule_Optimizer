@@ -136,7 +136,20 @@ fun main(args: Array<String>) {
         // Only use the override if it's explicitly provided and NOT blank.
         // If it IS blank, it means the user explicitly wants NO file processed (e.g. from Dashboard)
         val orCsvPath = csvOverride ?: config.getCsvPath()
-        val cleanedCsvPath = if (isJsonOutput) null else "$orCsvPath.cleaned.csv"
+        
+        // Output path for cleaned file (used in NORMALIZE_ONLY mode)
+        val cleanSuffix = "_clean"
+        val cleanedCsvPath = if (orCsvPath.isNotBlank()) {
+            val file = File(orCsvPath)
+            val name = file.name
+            val baseName = name.substringBeforeLast(".")
+            val ext = name.substringAfterLast(".", "")
+            
+            // Handle if baseName already ends with _clean to avoid double suffix
+            val finalBaseName = if (baseName.endsWith(cleanSuffix)) baseName else "$baseName$cleanSuffix"
+            val cleanName = if (ext.isNotEmpty()) "$finalBaseName.$ext" else finalBaseName
+            File(file.parentFile, cleanName).absolutePath
+        } else null
         
         if (hasDebug && !isJsonOutput) {
             logger.debug("Validating OR CSV: {} (override: {})", orCsvPath, csvOverride)
@@ -146,7 +159,8 @@ fun main(args: Array<String>) {
             val file = File(csvOverride)
             if (file.exists()) {
                 if (!isJsonOutput) logger.debug("Validating OR CSV via override: {}", csvOverride)
-                validator.validate(csvOverride, cleanedCsvPath, null, isJsonOutput)
+                val targetOutput = if (effectiveProcessingMode == ProcessingMode.NORMALIZE_ONLY) cleanedCsvPath else null
+                validator.validate(csvOverride, targetOutput, null, isJsonOutput)
             } else {
                 if (!isJsonOutput) logger.debug("OR CSV override file NOT FOUND: {}", csvOverride)
                 CsvValidator.ValidationResult(ValidationReport().apply { isHeaderRowPresent = false; incrementSkipped("File not found at: $csvOverride") }, emptyList())
@@ -155,10 +169,11 @@ fun main(args: Array<String>) {
             val file = File(orCsvPath)
             if (file.exists()) {
                 if (!isJsonOutput) logger.debug("Validating OR CSV via config: {}", orCsvPath)
-                validator.validate(orCsvPath, cleanedCsvPath, null, isJsonOutput)
+                val targetOutput = if (effectiveProcessingMode == ProcessingMode.NORMALIZE_ONLY) cleanedCsvPath else null
+                validator.validate(orCsvPath, targetOutput, null, isJsonOutput)
             } else {
                 if (!isJsonOutput) logger.debug("OR CSV config file NOT FOUND: {}", orCsvPath)
-                CsvValidator.ValidationResult(ValidationReport().apply { isHeaderRowPresent = false; incrementSkipped("File not found at: $orCsvPath") }, emptyList())
+                CsvValidator.ValidationResult(ValidationReport().apply { isHeaderRowPresent = false; incrementSkipped("OR CSV config file NOT FOUND at: $orCsvPath") }, emptyList())
             }
         } else {
             if (!isJsonOutput) logger.debug("No OR CSV path provided to validate. csvOverride: '{}', orCsvPath: '{}'", csvOverride, orCsvPath)
@@ -167,6 +182,19 @@ fun main(args: Array<String>) {
 
         // Validate CRNA if provided
         val crnaPath = crnaCsvOverride ?: config.getCrnaCsvPath()
+        
+        val crnaCleanedCsvPath = if (!crnaPath.isNullOrBlank()) {
+            val file = File(crnaPath)
+            val name = file.name
+            val baseName = name.substringBeforeLast(".")
+            val ext = name.substringAfterLast(".", "")
+            
+            // Handle if baseName already ends with _clean
+            val finalBaseName = if (baseName.endsWith(cleanSuffix)) baseName else "$baseName$cleanSuffix"
+            val cleanName = if (ext.isNotEmpty()) "$finalBaseName.$ext" else finalBaseName
+            File(file.parentFile, cleanName).absolutePath
+        } else null
+
         if (hasDebug && !isJsonOutput) {
             logger.debug("CRNA CSV Path Check: {} (override: {})", crnaPath, crnaCsvOverride)
         }
@@ -174,7 +202,8 @@ fun main(args: Array<String>) {
             val file = File(crnaCsvOverride)
             if (file.exists()) {
                 if (!isJsonOutput) logger.debug("Validating CRNA CSV via override: {}", crnaCsvOverride)
-                validator.validate(crnaCsvOverride, null, config.getCrnaRequiredColumns(), isJsonOutput)
+                val targetOutput = if (effectiveProcessingMode == ProcessingMode.NORMALIZE_ONLY) crnaCleanedCsvPath else null
+                validator.validate(crnaCsvOverride, targetOutput, config.getCrnaRequiredColumns(), isJsonOutput)
             } else {
                 if (!isJsonOutput) logger.debug("CRNA CSV override file NOT FOUND: {}", crnaCsvOverride)
                 CsvValidator.ValidationResult(ValidationReport().apply { isHeaderRowPresent = false; incrementSkipped("File not found at: $crnaCsvOverride") }, emptyList())
@@ -183,10 +212,11 @@ fun main(args: Array<String>) {
             val file = File(crnaPath)
             if (file.exists()) {
                 if (!isJsonOutput) logger.debug("Validating CRNA CSV via config: {}", crnaPath)
-                validator.validate(crnaPath, null, config.getCrnaRequiredColumns(), isJsonOutput)
+                val targetOutput = if (effectiveProcessingMode == ProcessingMode.NORMALIZE_ONLY) crnaCleanedCsvPath else null
+                validator.validate(crnaPath, targetOutput, config.getCrnaRequiredColumns(), isJsonOutput)
             } else {
                 if (!isJsonOutput) logger.debug("CRNA CSV config file NOT FOUND: {}", crnaPath)
-                CsvValidator.ValidationResult(ValidationReport().apply { isHeaderRowPresent = false; incrementSkipped("File not found at: $crnaPath") }, emptyList())
+                CsvValidator.ValidationResult(ValidationReport().apply { isHeaderRowPresent = false; incrementSkipped("CRNA CSV config file NOT FOUND at: $crnaPath") }, emptyList())
             }
         } else {
             if (!isJsonOutput) logger.debug("No CRNA CSV path provided to validate.")
@@ -246,20 +276,27 @@ fun main(args: Array<String>) {
 
         if (effectiveProcessingMode == ProcessingMode.NORMALIZE_ONLY) {
             val normalizedPath = cleanedCsvPath ?: "${config.getCsvPath()}.normalized.csv"
+            val crnaNormalizedPath = crnaCleanedCsvPath
+            
             if (isJsonOutput) {
                 val mapper = ObjectMapper().apply {
                     registerModule(JavaTimeModule())
                 }
                 println("JSON_START")
-                val normalizationData = mapOf(
+                val normalizationData = mutableMapOf<String, Any?>(
                     "report" to validationResult.report,
+                    "crnaReport" to crnaValidationResult.report,
                     "cleanedPath" to normalizedPath,
+                    "crnaCleanedPath" to crnaNormalizedPath,
                     "mode" to "NORMALIZE_ONLY"
                 )
                 println(mapper.writeValueAsString(normalizationData))
                 println("JSON_END")
             } else {
-                logger.info("Normalization complete. File saved to: $normalizedPath")
+                logger.info("Normalization complete. OR File saved to: $normalizedPath")
+                if (crnaNormalizedPath != null) {
+                    logger.info("CRNA File saved to: $crnaNormalizedPath")
+                }
             }
             return
         }

@@ -84,8 +84,40 @@
             <div style="margin: 30px 0; padding: 30px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
                 <table style="width: 100%; border-collapse: collapse; font-size: 1.1rem;">
                     <tr>
-                        <td colspan="2" style="padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; font-weight: bold; color: #2c3e50;">
+                        <td colspan="2" style="padding: 10px 0 5px 0; border-bottom: 2px solid #e2e8f0; font-weight: bold; color: #2c3e50;">
                             Phase 1: Direct Labor Recovery (Hard Cash Flow Impact)
+                        </td>
+                    </tr>
+                    
+                    <!-- Current Cost Section -->
+                    <tr>
+                        <td colspan="2" style="padding: 10px 0 5px 0; font-size: 0.9rem; font-weight: bold; color: #718096; text-transform: uppercase; letter-spacing: 0.05em;">
+                            Actual Current Cost
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #edf2f7; opacity: 0.7;">
+                        <td style="padding: 10px 0; color: #64748b; font-size: 0.95rem;">
+                            Payroll: CRNA Labor Pool ({{ (scheduledCrnaHours * annualizationFactor) | numberformat("#,###") }} Hours)
+                        </td>
+                        <td style="padding: 10px 0; text-align: right; font-weight: bold; color: #4a5568; white-space: nowrap;">${{ crnaAnnualCost | numberformat("#,###") }}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #edf2f7; opacity: 0.7;">
+                        <td style="padding: 10px 0; color: #64748b; font-size: 0.95rem;">
+                            Contract: Anesthesia FTEs ({{ (scheduledAnesDays * annualizationFactor) | numberformat("#") }} Provider-Days)
+                        </td>
+                        <td style="padding: 10px 0; text-align: right; font-weight: bold; color: #4a5568; white-space: nowrap;">${{ anesAnnualCost | numberformat("#,###") }}</td>
+                    </tr>
+                    <tr style="border-bottom: 2px solid #cbd5e0;">
+                        <td style="padding: 8px 0; font-weight: bold; color: #4a5568; font-size: 0.95rem;">Total Actual Current Cost</td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: bold; color: #4a5568;">${{ totalAnnualCost | numberformat("#,###") }}</td>
+                    </tr>
+
+                    <tr><td colspan="2" style="padding: 10px 0;"></td></tr>
+
+                    <!-- Opportunity Section -->
+                    <tr>
+                        <td colspan="2" style="padding: 5px 0; font-size: 0.9rem; font-weight: bold; color: #27ae60; text-transform: uppercase; letter-spacing: 0.05em;">
+                            The Opportunity (Total Savings Potential)
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #edf2f7;">
@@ -109,9 +141,25 @@
 
                     <tr><td colspan="2" style="padding: 20px 0;"></td></tr>
 
+                    <!-- Phase 2 Current Cost Section -->
                     <tr>
-                        <td colspan="2" style="padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; font-weight: bold; color: #2c3e50;">
-                            Phase 2: Operational Capacity Recovery (Soft/Asset Value)
+                        <td colspan="2" style="padding: 10px 0 5px 0; font-size: 0.9rem; font-weight: bold; color: #718096; text-transform: uppercase; letter-spacing: 0.05em;">
+                            Actual Current Cost
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 2px solid #cbd5e0; opacity: 0.7;">
+                        <td style="padding: 10px 0; color: #64748b; font-size: 0.95rem;">
+                            Space: Physical OR-Day Allocation ({{ (totalRoomDaysGlobal * annualizationFactor) | numberformat("#") }} Rooms)
+                        </td>
+                        <td style="padding: 10px 0; text-align: right; font-weight: bold; color: #4a5568; white-space: nowrap;">${{ orAnnualCost | numberformat("#,###") }}</td>
+                    </tr>
+
+                    <tr><td colspan="2" style="padding: 10px 0;"></td></tr>
+
+                    <!-- Phase 2 Opportunity Section -->
+                    <tr>
+                        <td colspan="2" style="padding: 5px 0; font-size: 0.9rem; font-weight: bold; color: #3182ce; text-transform: uppercase; letter-spacing: 0.05em;">
+                            The Opportunity (Total Savings Potential)
                         </td>
                     </tr>
                     <tr style="border-bottom: 1px solid #edf2f7;">

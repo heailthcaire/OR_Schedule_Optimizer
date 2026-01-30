@@ -131,6 +131,17 @@ class ReportDataService {
         
         context["hardAnnualSavings"] = hardAnnualSavings
         context["softAnnualSavings"] = softAnnualSavings
+
+        // Baseline costs (Actual Current Cost)
+        val crnaAnnualCost = scheduledCrnaHours * crnaHourRate * annualizationFactor
+        val anesAnnualCost = globalStats.scheduledAnesDays * anesRate * annualizationFactor
+        val orAnnualCost = totalRoomDaysGlobalFinal * costPerOrDay * annualizationFactor
+
+        context["crnaAnnualCost"] = crnaAnnualCost
+        context["anesAnnualCost"] = anesAnnualCost
+        context["orAnnualCost"] = orAnnualCost
+        context["totalAnnualCost"] = crnaAnnualCost + anesAnnualCost
+
         context["dailyLeakage"] = annualOpportunity / 365.25
         context["auditId"] = "AUD-" + UUID.randomUUID().toString().substring(0, 8).uppercase()
 

@@ -319,18 +319,39 @@ export function useOptimizer() {
   };
 
   const cleanFile = async () => {
-    if (!csvPath || !window.ipcRenderer) return;
+    if ((!csvPath && !crnaCsvPath) || !window.ipcRenderer) return;
     setIsCleaning(true);
     try {
       const javaResults: any = await window.ipcRenderer.invoke('analyze-with-java', {
-        csvPath: csvPath,
+        csvPath: csvPath || "",
+        crnaCsvPath: crnaCsvPath || "",
         mode: 'NORMALIZE_ONLY'
       });
-      if (javaResults && javaResults.cleanedPath) {
-        setCleanedPath(javaResults.cleanedPath);
+      console.log('cleanFile results:', javaResults);
+      if (javaResults && (javaResults.cleanedPath || javaResults.crnaCleanedPath)) {
+        if (javaResults.cleanedPath) {
+          setCleanedPath(javaResults.cleanedPath);
+          const parts = javaResults.cleanedPath.split(/[\\/]/);
+          setFileName(parts[parts.length - 1]);
+        }
+        
+        if (javaResults.crnaCleanedPath) {
+          // If we had a special state for crnaCleanedPath we would set it here
+          const parts = javaResults.crnaCleanedPath.split(/[\\/]/);
+          setCrnaFileName(parts[parts.length - 1]);
+        }
+
         setIsCleaned(true);
-        // Refresh validation report if it includes new stats
+
+        // Refresh validation reports
         if (javaResults.report) setValidationReport(javaResults.report);
+        if (javaResults.crnaReport) setCrnaValidationReport(javaResults.crnaReport);
+        
+        const locationMsg = javaResults.cleanedPath 
+          ? `OR File: ${javaResults.cleanedPath}${javaResults.crnaCleanedPath ? '\nCRNA File: ' + javaResults.crnaCleanedPath : ''}`
+          : `CRNA File: ${javaResults.crnaCleanedPath}`;
+
+        alert(`Clean file(s) created successfully!\n\n${locationMsg}`);
       } else if (javaResults && javaResults.error) {
         alert(`Cleaning Error: ${javaResults.error}`);
       }
