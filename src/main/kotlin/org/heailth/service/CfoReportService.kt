@@ -55,8 +55,23 @@ class CfoReportService(private val config: ConfigLoader) {
         renderTemplate("04_Methodology_OR_Consolidation.peb", supplementalDir.resolve("04_Methodology_OR_Consolidation.html"), context)
         renderTemplate("06_CFO_Audit_Verification_Guide.peb", supplementalDir.resolve("06_CFO_Audit_Verification_Guide.html"), context)
         renderTemplate("07_Calculation_Methodology_Summary.peb", supplementalDir.resolve("07_Calculation_Methodology_Summary.html"), context)
+        
+        // 3. Copy calculations_validation_details.html to supplemental/08_Calculations_Validation_Details.html
+        val projectResDir = Paths.get(projectRoot, "src/main/resources/documentation")
+        val validationDoc = projectResDir.resolve("calculations_validation_details.html")
+        if (Files.exists(validationDoc)) {
+            Files.copy(validationDoc, supplementalDir.resolve("08_Calculations_Validation_Details.html"), StandardCopyOption.REPLACE_EXISTING)
+            logger.debug("Copied calculations_validation_details.html to 08_Calculations_Validation_Details.html")
+        }
 
-        // 3. Zip the folder, excluding the original report.html
+        // 4. Copy Anesthesia Savings Methodology (already exists as HTML)
+        val anesMethodDoc = projectResDir.resolve("anesthesia_savings_methodology.html")
+        if (Files.exists(anesMethodDoc)) {
+            Files.copy(anesMethodDoc, supplementalDir.resolve("09_Anesthesia_Savings_Methodology.html"), StandardCopyOption.REPLACE_EXISTING)
+            logger.debug("Copied anesthesia_savings_methodology.html to 09_Anesthesia_Savings_Methodology.html")
+        }
+
+        // 5. Zip the folder, excluding the original report.html
         zipReportFolder(reportDir)
     }
 

@@ -52,6 +52,10 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
+        .highlight-text {
+            color: #059669;
+            font-weight: 700;
+        }
         .formula-title {
             font-weight: 700;
             display: block;
@@ -129,15 +133,16 @@
             <li><strong>Labor Yield:</strong> Efficiency is further validated by the "Labor Yield" metric, which compares professional work minutes against total paid capacity across the resource pool.</li>
         </ul>
 
-        <h2>Mathematical Proof Sample</h2>
+        <h2>Mathematical Proof Sample (Manual Verification)</h2>
         <p>Example of schedule absorption (Site-Day Analysis):</p>
-        <ul>
-            <li><strong>Baseline:</strong> 12 Anesthesiologists assigned across 12 physical ORs.</li>
-            <li><strong>Optimization:</strong> 2 ORs eliminated (Method 1: 2 Anes-Days Saved).</li>
-            <li><strong>Window Compression:</strong> Site-wide coverage duration reduced by 480 minutes (Method 2: 1 Anes-Day Saved).</li>
-            <li><strong>Absorption:</strong> 1 additional provider's load fully fit into gaps of others (Method 3: 1 Anes-Day Saved).</li>
-            <li><strong>Result:</strong> <strong>4 Total Anes-Days Saved</strong></li>
-        </ul>
+        <div class="calc-card">
+            <span class="formula-title">Scenario: 7/8/2025 - FM ENDOSCOPY</span>
+            <ul>
+                <li><strong>Baseline:</strong> 15 cases distributed across 6 physical rooms. Total clinical demand = 485 minutes.</li>
+                <li><strong>OR Optimization:</strong> High-precision bin-packing fits all 15 cases into 3 rooms (480m capacity each). <span class="highlight-text">3 OR-Days Saved.</span></li>
+                <li><strong>Anesthesia Absorption (Method 3):</strong> Since cases now reside in only 3 rooms, the system evaluates if the 12 originally scheduled providers can be compressed. Through temporal gap analysis, the system proves that 1 provider's entire daily load can be absorbed into the free blocks of others. <span class="highlight-text">1 Anes-Day Saved.</span></li>
+            </ul>
+        </div>
 
         <div class="footer">
             HEalLTHCaiRE.ai | smAIrtRx - OR Schedule Optimization Engine | Enterprise v1.7

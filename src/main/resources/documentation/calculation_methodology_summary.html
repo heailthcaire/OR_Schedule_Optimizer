@@ -181,11 +181,28 @@
 
         <section class="key-calculations">
             <h2>Key Financial & Operational Metrics</h2>
+
+            <div class="calc-card">
+                <h3>Manual Verification Example: 7/8/2025 (FM ENDOSCOPY)</h3>
+                <p>To definitively validate accuracy, consider this sample from the 100-row audit dataset:</p>
+                <div class="methodology-grid">
+                    <div class="methodology-card or" style="border-top-width: 2px; padding: 16px;">
+                        <h4>OR-Days Saved</h4>
+                        <p style="font-size: 0.8rem;">15 cases (485m surgical demand) spread across 6 rooms. Optimizer packs them into 3 rooms.</p>
+                        <div class="formula">6 Actual - 3 Opt = 3 Saved</div>
+                    </div>
+                    <div class="methodology-card crna" style="border-top-width: 2px; padding: 16px;">
+                        <h4>CRNA Hours Saved</h4>
+                        <p style="font-size: 0.8rem;">Chester: 2 CRNAs @ 10h = 20h supply. 85% productivity = 17h effective. Demand = 4.5h.</p>
+                        <div class="formula">17h - 4.5h = 12.5h Saved</div>
+                    </div>
+                </div>
+            </div>
             
-            <div className="calc-card">
+            <div class="calc-card">
                 <h3>Annual Savings Opportunity</h3>
                 <p>The projected 12-month financial opportunity based on identified resource recovery across all paths. Projections are dynamically scaled based on the actual date range of the analyzed dataset.</p>
-                <div className="formula">Annual Savings = (Identified Savings) × (365.25 / Analyzed Days)</div>
+                <div class="formula">Annual Savings = (Identified Savings) × (365.25 / Analyzed Days)</div>
             </div>
 
             <div class="calc-card">
