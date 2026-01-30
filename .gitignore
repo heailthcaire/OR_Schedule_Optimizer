@@ -1,0 +1,39 @@
+target/
+*.log
+.DS_Store
+
+# Java
+!.mvn/wrapper/maven-wrapper.jar
+.kotlin
+
+# Frontend
+node_modules/
+dashboard/node_modules/
+dist/
+dashboard/dist/
+dashboard/dist-electron/
+dashboard/dist-installers/
+
+# ZIP Backups
+*.zip
+
+# Temporary Debug Files
+.extra_hours_tail.txt
+.json_run_output.txt
+.output_verify_*.txt
+.run_output.txt
+.output_validation.txt
+.output_verify.txt
+.repro_json.json
+.last_run_json.json
+.summary_results.json
+dependency-reduced-pom.xml
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/

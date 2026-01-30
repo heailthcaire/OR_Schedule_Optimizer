@@ -1,0 +1,95 @@
+<div class="definitions">
+    <h3>Definitions & Methodology</h3>
+    
+    <p>
+        <strong>Saved OR: </strong>
+        A 'Saved OR' is a theoretical OR room that was physically used in the actual schedule but could have been avoided if the cases were packed more densely into fewer ORs, assuming a fixed daily capacity per OR (measured in 'OR-days').
+    </p>
+    
+    <p>
+        <strong>Methodology: </strong>
+        For each site and date, optimization is driven by physical room occupancy (Patient In/Out times). Each Operating Room is treated as a "bin" with a fixed capacity (standard 480 minutes). We use a high-precision bin-packing algorithm (Google OR-Tools) to determine the minimum physical footprint required to support surgical volume. 'ORs Saved' is the difference between the actual number of unique ORs used that day and this optimized minimum. If a site used only one OR, it is skipped (ORs Saved = 0).
+    </p>
+
+    <p>
+        <strong>Asset vs. Labor (Dual-Path Optimization): </strong>
+        The system identifies savings through two distinct paths:
+        <ul>
+            <li><strong>Physical Asset Stacking:</strong> Driven by Patient_In and Patient_Out times. Minimizes the physical OR footprint (OR-days) needed to support workload.</li>
+            <li><strong>Labor ROI Analysis:</strong> Measured by Anesthesia_Start and Anesthesia_End times. Identifies "leakage" where professional labor is paid for but idle through:
+                <ul>
+                    <li><strong>Site-Level Anesthesia (Anes-Days Saved):</strong> Savings through OR elimination, FTE hours reduction, and schedule gap absorption within a facility.</li>
+                    <li><strong>Regional-Level CRNA (CRNA Hours Saved):</strong> Efficiency gains from pooling CRNA labor across defined regional sites, acknowledging float potential.</li>
+                </ul>
+            </li>
+        </ul>
+    </p>
+
+    <p>
+        <strong>Total Anes: </strong>
+        The total count of unique Anesthesia Providers identified across the entire dataset at the Site-Day level.
+    </p>
+
+    <p class="disclaimer">
+        <strong>Note: </strong>
+        A "saved OR" refers to an "OR day" (one operating OR for one day).
+    </p>
+
+    <p class="disclaimer">
+        <strong>Out of Bounds: </strong>
+        Cases flagged as 'Out of Bounds' are procedures that occurred (start or end) outside the configured 'Absolute Start/End' workday boundaries. These cases are still included in the optimization and utilization metrics using their full actual duration, as they represent real resource demand that could potentially be shifted into a standard block.
+    </p>
+
+    <p class="disclaimer">
+        <strong>Workday Boundaries: </strong>
+        While actual OR use spans from the start of the earliest procedure to the end of the latest, the optimizer uses a fixed 'OR Capacity' (e.g., 480 minutes) as the standard workday block. It evaluates the physical occupancy requirements against this fixed capacity to determine theoretical OR savings, ensuring cases are packed sequentially without temporal overlap.
+    </p>
+
+    <p class="disclaimer">
+        <strong>Optimization Constraints: </strong>
+        The model focuses on 'time-block' efficiency and temporal packing. No two cases in the same room can overlap in time. The solver shifts cases within the day to find the most compact arrangement based on physical room occupancy. It does not account for specific constraints such as surgeon overlapping schedules or specific equipment requirements.
+    </p>
+
+    <p class="disclaimer">
+        <strong>Turnover & Padding: </strong>
+        Total case durations used for optimization include the configured 'Padding' (e.g., 15 mins start/end). This padding serves as a buffer to account for OR turnover, cleaning, and preparation time between cases.
+    </p>
+
+    <p>
+        <strong>Utilization: </strong>
+        'Overall Utilization' is calculated by dividing the total minutes of surgical work (including padding) by the total capacity of the *optimized* number of ORs. This reflects how effectively the standard workday blocks are being filled in the theoretical model.
+    </p>
+
+    <p>
+        <strong>Prime Time Utilization:</strong>
+        The percentage of available OR time during the "Prime Time" window (07:00 AM - 03:00 PM) that was occupied by surgical cases.
+    </p>
+
+    <p>
+        <strong>FCOTS % (First Case On-Time Start):</strong>
+        The percentage of rooms where the first scheduled case of the day started on or before the institutional benchmark (07:30 AM).
+    </p>
+
+    <p>
+        <strong>TOT (Turnover Time):</strong>
+        The average time elapsed between one patient exiting an OR and the next patient entering the same OR.
+    </p>
+
+    {% if anesthesiaStaffingSelected %}
+    <p>
+        <strong>Contribution Margin:</strong>
+        An estimate of the financial return per OR hour, calculated as (Estimated Revenue - Variable Costs) / Total OR Hours utilized. Variable costs include the base OR room rate plus any selected anesthesia staffing options.
+    </p>
+    {% endif %}
+    
+    <p>
+        <strong>Annual Savings:</strong>
+        The projected yearly savings based on identified resource recovery across all paths. Projections are dynamically scaled based on the actual duration of the analyzed dataset ({{ analyzedDays }} days):
+        <ul>
+            <li><strong>OR-Days Savings:</strong> Identified OR-days saved multiplied by the base OR-Day Rate and projection factor.</li>
+            <li><strong>Anesthesia Staffing Savings:</strong> If enabled, Anes-days saved multiplied by the Anesthesiologist daily rate and projection factor.</li>
+            <li><strong>CRNA Efficiency Savings:</strong> If enabled, CRNA hours saved multiplied by the CRNA hourly rate ($150) and projection factor.</li>
+        </ul>
+        The projection factor is 365.25 / {{ analyzedDays }} = {{ annualizationFactor | numberformat("#.##") }}x.
+    </p>
+</div>

@@ -1,0 +1,111 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    {% if showSummaryGraph %}
+    const execCtx = document.getElementById('execSummaryChart').getContext('2d');
+    const execData = {{ execSummaryChart | json | raw }};
+    const totalOptimized = execData.totalActual - execData.totalSaved;
+    const percentReduction = (execData.totalSaved / execData.totalActual * 100).toFixed(1);
+
+    new Chart(execCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Actual Total OR-Days', 'Optimized Total OR-Days', 'OR-Days Saved'],
+            datasets: [{
+                label: 'OR-Days',
+                data: [execData.totalActual, totalOptimized, execData.totalSaved],
+                backgroundColor: ['#6c757d', '#007bff', '#28a745']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: { display: true, text: 'Operating Room Utilization - Actual vs Optimized', font: { size: 18 } },
+                subtitle: { display: true, text: 'Total Saved: ' + execData.totalSaved + ' OR-Days (' + percentReduction + '% Reduction)', color: '#28a745', font: { weight: 'bold' } }
+            },
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'OR-Days' } } }
+        }
+    });
+    {% endif %}
+
+    {% if showDetailGraph %}
+    const siteCharts = {{ siteCharts | json | raw }};
+    siteCharts.forEach(siteChart => {
+        const canvas = document.getElementById(siteChart.canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: siteChart.labels,
+                datasets: [
+                    { label: 'Actual OR-Days', data: siteChart.actual, backgroundColor: '#6c757d' },
+                    { label: 'Optimized OR-Days', data: siteChart.optimized, backgroundColor: '#007bff' },
+                    { label: 'OR-Days Saved (Opportunity)', data: siteChart.saved, backgroundColor: '#28a745' }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Monthly OR Room Allocation - Efficiency & Cost Saving Opportunity (Site: ' + siteChart.siteName + ')', font: { size: 16 } },
+                    legend: { display: true },
+                    tooltip: {
+                        callbacks: {
+                            footer: (tooltipItems) => {
+                                let saved = 0;
+                                tooltipItems.forEach(function(tooltipItem) {
+                                    if (tooltipItem.datasetIndex === 2) saved = tooltipItem.raw;
+                                });
+                                return saved > 0 ? 'Opportunity: Eliminate ' + saved.toFixed(0) + ' OR-days' : '';
+                            }
+                        }
+                    }
+                },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Total OR-Days' } } }
+            }
+        });
+    });
+    {% endif %}
+
+    {% for ss in siteStats %}
+        {% if ss.extraCrnaHours > 0.5 %}
+        new Chart(document.getElementById('crna_chart_{{ siteToCanvasId[ss.name] }}'), {
+            type: 'bar',
+            data: {
+                labels: ['{{ ss.name }}'],
+                datasets: [{
+                    label: 'CRNA Hours Saved',
+                    data: [{{ ss.extraCrnaHours | numberformat("#") }}],
+                    backgroundColor: '#3b82f6',
+                    borderColor: '#2563eb',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'CRNA Hours Saved: {{ ss.name }}'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        {% if maxExtraCrnaHours is not null %}
+                        max: {{ maxExtraCrnaHours }},
+                        {% endif %}
+                        title: { display: true, text: 'Hours' }
+                    },
+                    y: {
+                        display: false
+                    }
+                }
+            }
+        });
+        {% endif %}
+    {% endfor %}
+});
+</script>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smAIrtRx - OR | Executive Feature Highlights</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+        }
+        .hero {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.025em;
+            color: #94a3b8;
+        }
+        .hero h1 span.ai {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+        .hero h1 span.version {
+            font-size: 1.2rem;
+            vertical-align: middle;
+            margin-left: 10px;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        .hero p {
+            font-size: 1.4rem;
+            color: #cbd5e1;
+            max-width: 800px;
+            margin: 20px auto 0;
+            font-weight: 500;
+        }
+        .container {
+            max-width: 800px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+        }
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            margin-bottom: 40px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-top: 0;
+            display: flex;
+            items-center: center;
+            gap: 12px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .feature-item {
+            border-left: 4px solid var(--primary);
+            padding-left: 20px;
+        }
+        .feature-item h3 {
+            font-size: 1.1rem;
+            margin: 0 0 8px 0;
+            color: var(--secondary);
+        }
+        .feature-item p {
+            font-size: 0.95rem;
+            margin: 0;
+            color: #64748b;
+        }
+        .screen-section {
+            margin-top: 60px;
+        }
+        .screen-card {
+            background: #0f172a;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 60px;
+            border: 1px solid #1e293b;
+        }
+        .screen-header {
+            background: #1e293b;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .dot-red { background: #ef4444; }
+        .dot-yellow { background: #f59e0b; }
+        .dot-green { background: #10b981; }
+        .screen-title {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .screen-content {
+            padding: 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            overflow: hidden;
+            position: relative;
+        }
+        .screen-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .placeholder-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .screen-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .screen-info {
+            padding: 24px;
+            background: var(--white);
+            color: var(--text);
+        }
+        .screen-info h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.25rem;
+            color: var(--secondary);
+        }
+        .screen-info p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .footer {
+            margin-top: 40px;
+            padding: 24px;
+            background-color: #64748b;
+            color: #ffffff;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>sm<span class="ai">AI</span>rtRx - OR <span class="version">v1.7</span></h1>
+        <p>Enterprise Operating Room Optimization & Financial Decision Support</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Core Capabilities</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>Asset Consolidation</h3>
+                    <p>Mathematically minimize physical OR-day requirements using advanced CP-SAT optimization based on physical occupancy (Patient In/Out).</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Labor ROI Analysis</h3>
+                    <p>Identify "leakage" in professional anesthesia staffing spend through three distinct efficiency metrics: OR Elimination, FTE Hours Reduction, and Schedule Absorption.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Fail-Fast Validation</h3>
+                    <p>Ensure 100% data integrity with automated structural and logical error detection before analysis.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>What-If Analysis</h3>
+                    <p>Instantly evaluate the financial impact of changing safety buffers or OR shift capacities.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Regional Clusters</h3>
+                    <p>Consolidate surgical volume across multiple facilities to discover cross-site efficiency and site closure opportunities.</p>
+                </div>
+                <div class="feature-item" style="border-left-color: var(--accent);">
+                    <h3>AI Strategic Insights</h3>
+                    <p>Generate executive-ready strategic prompts for GPT-4/Claude to instantly identify building closures and financial leakage.</p>
+                </div>
+                <div class="feature-item" style="border-left-color: var(--accent);">
+                    <h3>Strategic KPIs</h3>
+                    <p>Support for mission-critical metrics including Contribution Margin, Prime Time Util, and Turnover Efficiency.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen-section">
+            <!-- Platform Overview (10 Key Screens) -->
+            <h2 style="margin-bottom: 32px; justify-content: center;">Platform Overview (10 Key Screens)</h2>
+
+            <!-- Screen 1: Add Data -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Add Data / Ingestion</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="screen_ingestion.png" alt="Add Data Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">📥</div>
+                        <div style="color: #60a5fa; font-weight: 800;">DATA INGESTION ENGINE</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 1</span>
+                    <h3>High-Integrity Data Loading</h3>
+                    <p>Secure local file selection with real-time validation. Verifies "All Dates are valid" and "All Case IDs present" before allowing optimization.</p>
+                </div>
+            </div>
+
+            <!-- Screen 2: Dashboard -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Executive Dashboard</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="screen_dashboard.png" alt="Executive Dashboard Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">📊</div>
+                        <div style="color: #34d399; font-weight: 800;">GLOBAL PERFORMANCE METRICS</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 2</span>
+                    <h3>Enterprise ROI Overview</h3>
+                    <p>Immediate visibility into total OR-days saved, overall asset utilization, and projected financial recovery across all sites.</p>
+                </div>
+            </div>
+
+            <!-- Screen 3: Staffing -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Staff</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="images/Staff%20Reduction.png" alt="Staff Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">👥</div>
+                        <div style="color: #60a5fa; font-weight: 800;">STAFFING EFFICIENCY</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 3</span>
+                    <h3>Professional Labor Recovery (Hard Savings)</h3>
+                    <p>Analyze CRNA and Anesthesiologist savings through a regional lens. Identifies "Hard Savings" recovery potential by aligning supply with surgical demand.</p>
+                </div>
+            </div>
+
+            <!-- Screen 4: What-If Analysis -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">What-If Analysis</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="screen_modeling.png" alt="What-If Analysis Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">🧪</div>
+                        <div style="color: #fbbf24; font-weight: 800;">WHAT-IF ANALYSIS</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 4</span>
+                    <h3>Strategic Scenario Modeling</h3>
+                    <p>Adjust parameters like CRNA Hourly Rate and Productivity Factor. Instantly model how changes to turnover buffers or clinical safety factors impact your bottom line.</p>
+                </div>
+            </div>
+
+            <!-- Screen 5: Site Deep-Dive -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Site Deep-Dive</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="screen_deepdive.png" alt="Site Deep-Dive Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">🧩</div>
+                        <div style="color: #a78bfa; font-weight: 800;">VISUAL CASE PACKING</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 5</span>
+                    <h3>Mathematical Proof of Savings</h3>
+                    <p>A granular, visual representation of how cases are "stacked" into fewer rooms, including a <strong>CFO Verification Sample</strong> that proves exactly which procedures were moved to eliminate a physical OR.</p>
+                </div>
+            </div>
+
+            <!-- Screen 6: Brief Report -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Brief Report</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="screen_reports.png" alt="Brief Report Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">📋</div>
+                        <div style="color: #f472b6; font-weight: 800;">DETAILED AUDIT TRAIL</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 6</span>
+                    <h3>Strategic Roadmap (CFO Package)</h3>
+                    <p>Automated board-ready strategic summaries. Includes "Hard vs Soft" savings categorization, unique Audit IDs, and cost-of-inaction metrics.</p>
+                </div>
+            </div>
+
+            <!-- Screen 7: Full Report -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Full Report</div>
+                    <div></div>
+                </div>
+                <div class="screen-content" style="background: white;">
+                    <div class="placeholder-content">
+                        <div class="screen-icon">📄</div>
+                        <div style="color: #0f172a; font-weight: 800; font-size: 1.5rem; margin-bottom: 10px;">DEEP-DIVE AUDIT</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">Integrated Java Source of Truth</div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 7</span>
+                    <h3>Integrated Source of Truth</h3>
+                    <p>Embedded access to the comprehensive Java-generated HTML report, providing mathematical proofs and operational breakdowns directly within the dashboard.</p>
+                </div>
+            </div>
+
+            <!-- Screen 8: Calculation Methodology Summary -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Calculation Methodology Summary</div>
+                    <div></div>
+                </div>
+                <div class="screen-content" style="background: #f8fafc;">
+                    <div class="placeholder-content">
+                        <div class="screen-icon">❓</div>
+                        <div style="color: #2563eb; font-weight: 800; font-size: 1.5rem; margin-bottom: 10px;">FORMULA GUIDE</div>
+                        <div style="color: #64748b; font-size: 0.9rem;">Definitions & Mathematical Proofs</div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 8</span>
+                    <h3>Total Formula Transparency</h3>
+                    <p>A dedicated summary screen explaining every optimization methodology and metric, from Physical Asset Stacking to CRNA Regional Pooling, with clear mathematical formulas and clinical justifications.</p>
+                </div>
+            </div>
+
+            <!-- Screen 9: Settings -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">System Settings</div>
+                    <div></div>
+                </div>
+                <div class="screen-content">
+                    <img src="screen_settings.png" alt="System Settings Screen">
+                    <!-- <div class="placeholder-content">
+                        <div class="screen-icon">⚙️</div>
+                        <div style="color: #94a3b8; font-weight: 800;">ENTERPRISE CONFIGURATION</div>
+                    </div> -->
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 9</span>
+                    <h3>Global Financial & Logic Defaults</h3>
+                    <p>Configure persistent financial rates, column mappings, and run automated system diagnostics to ensure engine health.</p>
+                </div>
+            </div>
+
+            <!-- Screen 10: AI Strategic Prompt -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">AI Strategic Prompt</div>
+                    <div></div>
+                </div>
+                <div class="screen-content" style="background: #1e293b; color: white; padding: 40px; text-align: left; font-family: monospace; font-size: 0.8rem;">
+                    <div style="border: 1px solid #334155; padding: 20px; background: #0f172a;">
+                        <span style="color: #60a5fa;"># AI STRATEGIC DATA PAYLOAD</span><br>
+                        *   **Global Asset Utilization:** Baseline: 64% → Optimized: 88%<br>
+                        *   **Cluster:** REGIONAL_HUB<br>
+                        *   **Absorption Potential:** Site B can be absorbed by the Hub 100% of the time.
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue">Stage 10</span>
+                    <h3>AI-Ready Strategic Output</h3>
+                    <p>Instantly generate a structured, copy-pasteable prompt for advanced AI analysis. Enables the CFO to ask GPT-4/Claude for quarterly strategic moves and building closure roadmaps.</p>
+                </div>
+            </div>
+
+            <!-- Final Stage: Tech Stack -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+                    <div class="screen-title">Enterprise Architecture</div>
+                    <div></div>
+                </div>
+                <div class="screen-content" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                    <div class="placeholder-content">
+                        <div class="screen-icon">💎</div>
+                        <div style="color: #60a5fa; font-weight: 800; font-size: 1.5rem; margin-bottom: 10px;">JAVA + ELECTRON</div>
+                        <div style="color: #94a3b8; font-size: 0.9rem;">The Gold Standard for Enterprise Applications</div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="badge badge-blue" style="background: #ede9fe; color: #7c3aed;">Final Stage</span>
+                    <h3>Best-in-Class Technology Stack</h3>
+                    <p>Built on the same mission-critical stack used by the world's most powerful applications, including <strong>Microsoft Visual Studio Code</strong>, <strong>Slack</strong>, and <strong>Discord</strong>. Combining the mathematical precision of Java with the high-performance UI of Electron for a secure, local-first enterprise experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        HEalLTHCaiRE.ai | smAIrtRx - OR v1.7 | Confidential Business Partner Briefing
+    </div>
+</body>
+</html>

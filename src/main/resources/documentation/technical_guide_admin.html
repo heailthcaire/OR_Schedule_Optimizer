@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Administrator Guide - smAIrtRx - OR</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --code-bg: #e8e8e8;
+            --border-color: #ddd;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        header {
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+        h1 { color: var(--primary-color); margin-top: 0; }
+        h2 { color: var(--secondary-color); border-left: 5px solid var(--accent-color); padding-left: 15px; margin-top: 40px; }
+        h3 { color: var(--accent-color); margin-top: 25px; }
+        p, ul, ol { margin-bottom: 15px; }
+        code {
+            background-color: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: var(--secondary-color);
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid var(--border-color);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+        }
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 60px;
+            padding: 24px;
+            background-color: #64748b;
+            color: #ffffff;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Technical Administrator Guide</h1>
+            <p><strong>Product:</strong> smAIrtRx - OR</p>
+            <p><strong>Focus:</strong> Data Analysis, System Configuration, and Executive Reporting</p>
+        </header>
+
+        <section>
+            <p>This guide provides the technical specifications and operational instructions required for an Administrator to manage the OR Schedule Optimizer. As the primary user, you will be responsible for preparing the input data, fine-tuning the optimization parameters, and delivering high-impact reports to the CFO.</p>
+        </section>
+
+        <h2>1. Data Preparation & Input Requirements</h2>
+        <p>The system processes historical surgical data via CSV files. For the optimizer to produce valid results, the input file must be well-formed and contain specific headers.</p>
+        
+        <h3>Required CSV Columns</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>System Key</th>
+                    <th>Description</th>
+                    <th>Expected Format</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Case_ID</code></td>
+                    <td>Unique identifier for the surgical encounter.</td>
+                    <td>String/Numeric</td>
+                </tr>
+                <tr>
+                    <td><code>Date</code></td>
+                    <td>Date of the procedure.</td>
+                    <td>Configurable (e.g., <code>M/d/yyyy</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>Site</code></td>
+                    <td>Hospital campus or facility name.</td>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td><code>OR_Room</code></td>
+                    <td>The actual room assigned during the procedure.</td>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td><code>Surgeon_Name</code></td>
+                    <td>The lead surgeon's name (used for concurrency constraints).</td>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td><code>Procedure_Type</code></td>
+                    <td>The name of the surgery performed.</td>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td><code>Anesthesia_Start_Time</code></td>
+                    <td>Beginning of anesthesia (Labor Analysis).</td>
+                    <td>Configurable (e.g., <code>hh:mm a</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>Anesthesia_End_Time</code></td>
+                    <td>Conclusion of anesthesia (Labor Analysis).</td>
+                    <td>Configurable (e.g., <code>hh:mm a</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>Patient_In_Room_Time</code></td>
+                    <td>Physical entry into the OR (Stacking Analysis).</td>
+                    <td>Configurable (e.g., <code>hh:mm a</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>Patient_Out_Room_Time</code></td>
+                    <td>Physical exit from the OR (Stacking Analysis).</td>
+                    <td>Configurable (e.g., <code>hh:mm a</code>)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Data Validation:</strong> The program automatically skips rows missing required data, "cross-midnight" durations (where patient exit is before patient entry), or procedures under a minimum duration (see <code>min.procedure.duration.minutes</code>). It also ignores procedures over a maximum duration (see <code>max.procedure.duration.hours</code>). These are logged and listed in the "Cases Ignored" section of the report.
+            <br><br>
+            <strong>Validation Workflow:</strong> To ensure absolute data integrity and prevent "garbage-in, garbage-out" scenarios, the system enforces a strict two-step process: <strong>1. Validate</strong> then <strong>2. Analyze</strong>. The analysis engine only operates on the specific subset of high-integrity rows that successfully passed the validation firewall.
+        </div>
+
+        <h2>2. Configuration Guide (<code>app.properties</code>)</h2>
+        <p>The application behavior is controlled via the <code>src/main/resources/app.properties</code> file. Below are the critical parameters:</p>
+
+        <h3>File & Column Mapping</h3>
+        <ul>
+            <li><code>csv.path</code>: Path to your raw data file.</li>
+            <li><code>report.path</code>: Destination path for the generated HTML report.</li>
+            <li><code>date.format</code> and <code>time.format</code>: Primary formats for parsing CSV data. The system features a robust <code>DateTimeParser</code> that automatically falls back to common patterns (ISO, M/d/yyyy, HH:mm, h:mm a, etc.) if the primary format fails.</li>
+            <li><code>id.column</code>, <code>date.column</code>, etc.: Maps the system's internal logic to your specific CSV header names.</li>
+            <li><code>or.occupancy.start.time.column</code> / <code>or.occupancy.end.time.column</code>: Maps the physical room occupancy times used for stacking.</li>
+            <li><code>anesthesia.start.time.column</code> / <code>anesthesia.end.time.column</code>: Maps the clinical labor duration used for Labor Yield metrics.</li>
+        </ul>
+
+        <h3>Optimization Parameters</h3>
+        <ul>
+            <li><code>processing.mode</code>: Controls the engine's operation level.
+                <ul>
+                    <li><code>FULL</code> (Default): Performs validation, normalization, and full schedule optimization.</li>
+                    <li><code>VALIDATE_ONLY</code>: Scans the CSV for errors and prints a validation report without running the optimizer.</li>
+                    <li><code>NORMALIZE_ONLY</code>: Validates the data and saves a cleaned/standardized version of the CSV (<code>.cleaned.csv</code>) for future use.</li>
+                </ul>
+            </li>
+            <li><code>crna.productivity.factor</code>: A decimal value between 0.50 and 1.00 (default: 0.85) that adjusts scheduled CRNA hours to account for non-clinical time (breaks, documentation, etc.).</li>
+            <li><code>bin.capacity.minutes</code>: The total available time per OR room per day (e.g., <code>480</code> for an 8-hour shift, or <code>600</code> for a 10-hour shift).</li>
+            <li><code>financials.crna.hour.rate</code>: The hourly rate used to value identified CRNA surplus (default: <code>175</code>).</li>
+            <li><code>report.package.path</code>: Destination for the generated Strategic CFO Report Package ZIP (default: <code>src/main/resources/report/CFO_Report_Package.zip</code>).</li>
+            <li><code>analysis.engine.name1</code> / <code>analysis.engine.name2</code>: Branding for the analytical tools displayed on the dashboard.</li>
+            <li><code>csv.required.columns</code>: List of mandatory CSV headers required for analysis.</li>
+            <li><code>crna.csv.path</code>: Path to the CRNA staffing data file.</li>
+            <li><code>crna.region.column</code>, <code>crna.name.column</code>, etc.: Mapping for CRNA staffing CSV.</li>
+            <li><code>start.time.pad.minutes</code> / <code>end.time.pad.minutes</code>: Adds a buffer to every case to account for Turnover Time (TOT). Default is <code>10</code> minutes.
+                <br><em>Math: <code>Occupancy Duration = (Patient Out - Patient In) + StartPad + EndPad</code></em>.</li>
+            <li><code>padding.procedure.[NAME]</code>: Allows defining specific buffers for high-volume or complex procedures (e.g., <code>padding.procedure.COLONOSCOPY = 5,5</code>).</li>
+            <li><code>skip.single.or</code>: If <code>true</code>, the optimizer ignores site-days that only used one room, as no consolidation is possible.</li>
+            <li><code>max.procedure.duration.hours</code>: Maximum allowed duration for a single procedure in hours. Procedures exceeding this limit are flagged and ignored during processing (default: <code>12</code>).</li>
+            <li><code>min.procedure.duration.minutes</code>: Minimum allowed duration for a single procedure in minutes. Procedures below this limit are ignored during processing (default: <code>15</code>).</li>
+        </ul>
+
+        <h3>Regional Cluster Optimization</h3>
+        <p>This advanced feature allows the system to treat multiple physical sites as a single operational pool, driving volume towards a designated primary "Hub."</p>
+        <ul>
+            <li><code>cluster.[CLUSTER_NAME]</code>: Defines a group of sites. The first site in the list is treated as the Hub (e.g., <code>cluster.NORTH = Site 1, Site 2</code>).</li>
+            <li><strong>Logic:</strong> The optimizer prioritizes filling all rooms at the Hub before considering any rooms at satellite sites.</li>
+        </ul>
+
+        <h3>AI Strategic Reporting</h3>
+        <p>Integrates with Large Language Models (LLMs) to provide automated executive-level insights.</p>
+        <ul>
+            <li><code>reporting.generate.ai.prompt</code>: Set to <code>true</code> to generate a copy-pasteable strategic prompt at the end of every analysis run.</li>
+        </ul>
+
+        <h3>Advanced Time Boundaries</h3>
+        <p>You can define a hard "Operating Window" using:</p>
+        <pre>
+# Example: 7:30 AM to 5:30 PM
+absolute.start.time = 07:30
+absolute.end.time = 17:30</pre>
+        <p>When both are set, the <code>bin.capacity.minutes</code> is automatically calculated as the difference between these two times.</p>
+
+        <h2>3. The <code>BinPackingOptimizer</code> Engine</h2>
+        <p>The core of the application utilizes <strong>Google OR-Tools CP-SAT</strong> to solve the "Bin Packing Problem." The engine employs a high-precision constraint-based approach to ensure mathematical accuracy and clinical feasibility.</p>
+
+        <h3>Dual-Path Optimization Strategy</h3>
+        <ol>
+            <li><strong>Asset Stacking (Physical Rooms):</strong> The engine uses <code>Patient_In</code> and <code>Patient_Out</code> times as the primary "bins." This identifies the minimum number of physical rooms required to support the surgical volume.</li>
+            <li><strong>Labor ROI (Professional Services):</strong> Measured by <code>Anesthesia_Start</code> and <code>Anesthesia_End</code> times. Identifies "leakage" where professional labor is paid for but idle through:
+                <ul>
+                    <li><strong>Anes-Days Saved:</strong> Savings through OR elimination, FTE hours reduction, and schedule gap absorption within a facility.</li>
+                    <li><strong>CRNA Hours Saved:</strong> Efficiency gains from pooling CRNA labor across defined regional sites, acknowledging float potential.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>Core Optimization Rules</h3>
+        <ol>
+            <li><strong>Room Capacity:</strong> The sum of occupancy durations (including padding) in any room must not exceed the configured Capacity (configured via <code>bin.capacity.minutes</code>).</li>
+            <li><strong>Temporal Packing:</strong> No two cases in the same room can overlap in time. The solver shifts cases within the day to find the most compact arrangement based on physical room occupancy (Patient In/Out).</li>
+            <li><strong>The Implicit Safety Rule:</strong> To preserve existing efficiencies, the system ignores padding-induced overlaps if two cases were originally scheduled in the same room and their actual physical room times did not overlap. This ensures that historical working schedules are not "broken" by the addition of safety buffers.</li>
+        </ol>
+
+        <h3>Optimization Logic</h3>
+        <p>The engine runs a multi-threaded analysis across all site-day groups. It evaluates every possible room consolidation opportunity, even on high-utilization days, using <strong>Occupancy</strong> as the primary constraint. <strong>Anesthesia</strong> data is preserved for secondary labor metrics but is decoupled from the room packing decision. If the CP-SAT solver cannot find an optimal solution within the timeout period, the system falls back to a <em>First-Fit Decreasing (FFD)</em> heuristic to provide the best possible estimate.</p>
+
+        <h2>4. Mathematical Outputs & Metrics</h2>
+        <p>The reports delivered to the CFO are based on the following calculations:</p>
+
+        <ul>
+            <li><strong>OR-Days (Actual):</strong> The count of unique <code>OR_Room</code> names found in the data for a specific site/date.</li>
+            <li><strong>OR-Days (Optimized):</strong> The minimum number of rooms required as determined by the high-precision solver using physical occupancy.</li>
+            <li><strong>Rooms Saved:</strong> <code>Actual Rooms - Consolidated Rooms</code>.</li>
+            <li><strong>CRNA Hours Saved:</strong> <code>Scheduled CRNA Supply - Clinical Demand</code>.</li>
+            <li><strong>Anes-Days Saved:</strong> Total potential FTE reduction across all three optimization methods.</li>
+            <li><strong>Overall Utilization:</strong> 
+                <code>Total Minutes of Physical Surgery / (Consolidated Rooms * Capacity)</code>.
+            </li>
+            <li><strong>Labor Yield:</strong> 
+                <code>Total Anesthesia Minutes / (Paid Block Capacity)</code>.
+            </li>
+            <li><strong>Variance Recovery:</strong> 
+                <code>(Site Mean Duration - Institutional Mean Duration) * Cost per Minute</code>.
+            </li>
+        </ul>
+
+        <h3>CFO Verification Sample</h3>
+        <p>A narrative-driven section at the bottom of the HTML report that provides a concrete mathematical proof of consolidation. It highlights a specific site-day and lists exactly which procedures were moved to other ORs to justify the elimination of physical rooms.</p>
+
+        <h3>Advanced Executive KPIs</h3>
+        <p>Administrators should also prepare for discussions regarding these strategic metrics, which focus on operational flow and profitability:</p>
+        <ul>
+            <li><strong>Contribution Margin per OR Hour:</strong> Financial ROI by service line.</li>
+            <li><strong>Prime Time Utilization:</strong> Efficiency specifically during the 07:00–15:00 window.</li>
+            <li><strong>CRNA Hours Saved:</strong> Efficiency gains from pooling CRNA labor across defined regional sites, acknowledging float potential.</li>
+            <li><strong>Anes-Days Saved:</strong> Savings through OR elimination, FTE hours reduction, and schedule gap absorption within a facility.</li>
+            <li><strong>FCOTS (First Case On-Time Start):</strong> Accuracy of the day's initial case starts.</li>
+            <li><strong>TOT (Turnover Time):</strong> Time elapsed between one patient leaving and the next entering the same room.</li>
+        </ul>
+
+        <h2>5. Documentation & Methodology</h2>
+        <p>For deep-dive verification and detailed mathematical proofs, the system provides four formal methodology documents:</p>
+        <ul>
+            <li><strong>CRNA Savings Methodology:</strong> High-level regional pool efficiency and "validated window" logic.</li>
+            <li><strong>Operating Room Savings Methodology:</strong> Physical asset consolidation using First-Fit Decreasing (FFD) bin-packing.</li>
+            <li><strong>Anes-Days Saved Methodology:</strong> Multi-path optimization (OR Elimination, FTE Reduction, and Gap Absorption).</li>
+            <li><strong>Calculation Methodology Summary:</strong> A comprehensive collection of formulas and pictures from the above documents.</li>
+        </ul>
+
+        <h2>6. Analysis Workflow (The Three-Stage Process)</h2>
+        <p>The dashboard utilizes a structured data preparation process to ensure data quality before running the optimization engine:</p>
+        
+        <h3>Stage 1: Select & Load</h3>
+        <p>Select your raw CSV file in the <strong>Add Data</strong> section. You may also select a CRNA staffing file to enable professional labor efficiency analysis. The system will load the files and display total row counts. No automated processing occurs at this stage.</p>
+
+        <h3>Stage 2: Validate Data</h3>
+        <p>Click the <strong>Validate</strong> button. The system scans the file for structural integrity and logical consistency. A <strong>CSV Validation Report</strong> will appear.</p>
+        <ul>
+            <li><strong>Structural Integrity:</strong> If a header row is missing or required columns are not found, the system reports <code>HEADER ROW NOT FOUND</code> or <code>MISSING REQUIRED COLUMNS</code> and stops processing immediately.</li>
+            <li><strong>Data Validation:</strong> For structurally sound files, it displays:
+                <ul>
+                    <li>Total Row Count</li>
+                    <li>Valid Row Count</li>
+                    <li>Error Row Count (Rows to be ignored)</li>
+                    <li>Detailed Error Breakdown (e.g., Duplicate Case IDs, Outlier Durations, Procedures under min duration)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Stage 3: Clean (Optional) & Analyze</h3>
+        <ul>
+            <li><strong>Clean File:</strong> If data errors are found, the <strong>Clean File</strong> button becomes active. Clicking it generates a <code>.cleaned.csv</code> version of your data, correcting recoverable formats and removing outliers.</li>
+            <li><strong>Analyze:</strong> Once a file is validated (or cleaned), the <strong>Analyze</strong> button activates. Click this to run the full CP-SAT optimization engine. Upon successful completion, the system will automatically switch to the <strong>Report</strong> view to display your results.</li>
+        </ul>
+
+        <h2>6. System Diagnostics</h2>
+        <p>To ensure the system is correctly installed and the optimization engine is healthy, the dashboard includes a <strong>System Diagnostics</strong> feature located in the <strong>Settings</strong> screen.</p>
+        
+        <h3>Running Diagnostics</h3>
+        <p>Clicking the <strong>Run System Diagnostics</strong> button will execute a suite of internal health checks. This verifies:</p>
+        <ul>
+            <li><strong>Java Runtime:</strong> Confirms that a compatible Java version is available on the machine.</li>
+            <li><strong>Resource Access:</strong> Verifies that the application can read its bundled data and configuration files.</li>
+            <li><strong>Engine Readiness:</strong> Confirms the optimization engine's core components are initialized and ready for processing.</li>
+        </ul>
+        <p>The results of these checks are displayed directly within the dashboard for immediate review. This process does not require an internet connection or any additional developer tools.</p>
+
+        <h2>7. Final Reporting</h2>
+        <p>After the analysis is complete, the Administrator can generate a high-fidelity executive report. Click the <strong>Generate Java Report</strong> button on the <strong>Report</strong> screen. This triggers the engine to produce the formal HTML report at the path specified in <code>report.path</code>, including all visual charts and mathematical proofs for clinical stakeholders.</p>
+
+        <div class="footer">
+            HEalLTHCaiRE.ai | smAIrtRx - OR - Technical Documentation | Enterprise v1.7
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<h2>Cases Ignored (data errors) (All)</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Row #</th>
+            <th>ID</th>
+            <th>Reason</th>
+            <th>Site</th>
+            <th>Date</th>
+            <th>OR</th>
+            <th>Procedure</th>
+            <th>CSV Start</th>
+            <th>CSV End</th>
+            <th>Anesth Start</th>
+            <th>Anesth End</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pr in invalidRows %}
+            <tr>
+                <td>{{ pr.rowNumber }}</td>
+                {% if pr.record is not null %}
+                    <td>{{ pr.record.id }}</td>
+                    <td>{{ pr.invalidReason }}</td>
+                    <td>{{ pr.record.site }}</td>
+                    <td>{{ pr.record.date }}</td>
+                    <td>{{ pr.record.orName }}</td>
+                    <td>{{ pr.record.procedure }}</td>
+                    <td>{{ pr.record.csvStart }}</td>
+                    <td>{{ pr.record.csvEnd }}</td>
+                {% else %}
+                    <td></td>
+                    <td>{{ pr.invalidReason }}</td>
+                    <td colspan="6"></td>
+                {% endif %}
+                <td>{{ pr.anesthesiaStart is not null ? pr.anesthesiaStart : "" }}</td>
+                <td>{{ pr.anesthesiaEnd is not null ? pr.anesthesiaEnd : "" }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimum Requirements - smAIrtRx - OR</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        header {
+            border-bottom: 3px solid var(--accent-color);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+        h1 { color: var(--primary-color); margin-top: 0; }
+        h2 { color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-top: 30px; }
+        h3 { color: var(--accent-color); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+        }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffecb5;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #64748b;
+            color: #ffffff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Minimum Requirements</h1>
+            <p>smAIrtRx - OR Implementation Guide</p>
+        </header>
+
+        <section>
+            <h2>1. System Environment</h2>
+            <ul>
+                <li><strong>Java Runtime:</strong> Java 21 or higher is required.</li>
+                <li><strong>Build Tool:</strong> Apache Maven (for compilation and dependency management).</li>
+                <li><strong>Hardware:</strong> Minimum 4GB RAM (8GB recommended for large datasets and complex optimizations).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>2. Data Volume Requirements</h2>
+            <p>To ensure statistical significance and meaningful optimization results, the input dataset must meet the following minimum volume:</p>
+            <div class="warning">
+                <strong>Minimum Requirement:</strong> The CSV file must contain at least <strong>100 rows</strong> of valid surgical data.
+            </div>
+            <p>The application includes an automated <code>ValidationTestFull</code> that will fail if the dataset does not meet this threshold, preventing the generation of unreliable reports.</p>
+        </section>
+
+        <section>
+            <h2>3. Data Preparation Workflow</h2>
+            <p>The system enforces a strict three-stage process in the <strong>Add Data</strong> section to maintain mathematical accuracy:</p>
+            <ol>
+                <li><strong>Selection:</strong> Choose a local CSV file. Path and filename are displayed.</li>
+                <li><strong>Validation:</strong> Run the <code>VALIDATE_ONLY</code> scan. The system checks against the <em>Data Integrity Rules</em> (see Section 4). If the file is missing headers or required columns, a simplified error report is shown and optimization is disabled.</li>
+                <li><strong>Optimization:</strong> Activation of the analysis engine requires a successful validation pass or the generation of a <em>Cleaned Data</em> version. Upon success, the interface automatically navigates to the Dashboard view.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>4. CSV File Specification</h2>
+            <p>The program expects a CSV file with specific headers. While header names can be mapped in <code>app.properties</code>, the following data points are mandatory:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requirement</th>
+                        <th>Default CSV Header</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Unique Identifier</td>
+                        <td><code>Case_ID</code></td>
+                        <td>A unique alphanumeric ID for each surgical case.</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure Date</td>
+                        <td><code>Date</code></td>
+                        <td>The date of the surgery (formatted per <code>app.properties</code>).</td>
+                    </tr>
+                    <tr>
+                        <td>Facility Name</td>
+                        <td><code>Site</code></td>
+                        <td>The name of the hospital or clinic.</td>
+                    </tr>
+                    <tr>
+                        <td>Operating Room</td>
+                        <td><code>OR_Room</code></td>
+                        <td>The specific room name or number.</td>
+                    </tr>
+                    <tr>
+                        <td>Surgeon</td>
+                        <td><code>Surgeon_Name</code></td>
+                        <td>The name of the performing surgeon.</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure Type</td>
+                        <td><code>Procedure_Type</code></td>
+                        <td>The description or code of the surgery.</td>
+                    </tr>
+                    <tr>
+                        <td>Start Timestamp (Labor)</td>
+                        <td><code>Anesthesia_Start_Time</code></td>
+                        <td>The time anesthesia began (used for Labor Yield).</td>
+                    </tr>
+                    <tr>
+                        <td>End Timestamp (Labor)</td>
+                        <td><code>Anesthesia_End_Time</code></td>
+                        <td>The time anesthesia concluded (used for Labor Yield).</td>
+                    </tr>
+                    <tr>
+                        <td>Room In (Physical)</td>
+                        <td><code>Patient_In_Room_Time</code></td>
+                        <td>The time the patient entered the OR (Primary driver for Room Consolidation).</td>
+                    </tr>
+                    <tr>
+                        <td>Room Out (Physical)</td>
+                        <td><code>Patient_Out_Room_Time</code></td>
+                        <td>The time the patient exited the OR (Primary driver for Room Consolidation).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>5. Data Integrity Rules</h2>
+            <p>The following data conditions will cause a row to be <strong>ignored</strong> by the optimizer:</p>
+            <ul>
+                <li><strong>Rows Missing Required Data:</strong> Any row with a blank value in a mandatory column.</li>
+                <li><strong>Cross-Midnight Durations:</strong> Cases where the End Time occurs before the Start Time (based on Physical Occupancy).</li>
+                <li><strong>Procedures under min duration:</strong> Cases where the calculated physical duration is below the <code>min.procedure.duration.minutes</code> threshold.</li>
+                <li><strong>Procedures over max duration:</strong> Cases where the duration exceeds the configured <code>max.procedure.duration.hours</code> threshold.</li>
+                <li><strong>Malformed Dates/Times:</strong> Data that does not match the primary or fallback parsing patterns.</li>
+                <li><strong>Duplicate Case IDs:</strong> Duplicate records with the same <code>Case_ID</code>.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Configuration (app.properties)</h2>
+            <p>Ensure the following keys are correctly configured before execution:</p>
+            <ul>
+                <li><code>csv.path</code>: Absolute or relative path to the data file.</li>
+                <li><code>bin.capacity.minutes</code>: Typically <code>480</code> for an 8-hour shift.</li>
+                <li><code>start.time.pad.minutes</code>: Default <code>10</code> minutes.</li>
+                <li><code>end.time.pad.minutes</code>: Default <code>10</code> minutes.</li>
+                <li><code>max.procedure.duration.hours</code>: Default <code>12</code> hours.</li>
+                <li><code>min.procedure.duration.minutes</code>: Default <code>15</code> minutes.</li>
+                <li><code>padding.procedure.[NAME]</code>: Optional procedure-specific padding (e.g., <code>5,5</code>).</li>
+                <li><code>date.format</code>: Matches your CSV date style (e.g., <code>M/d/yyyy</code>).</li>
+                <li><code>time.format</code>: Matches your CSV time style (e.g., <code>hh:mm a</code>).</li>
+            </ul>
+        </section>
+
+        <footer>
+            HEalLTHCaiRE.ai | smAIrtRx - OR - Technical Documentation | Enterprise v1.7
+        </footer>
+    </div>
+</body>
+</html>

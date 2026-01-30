@@ -1,0 +1,40 @@
+<h2>Daily Details</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Site</th>
+            <th>Date</th>
+            <th>OR Count Used</th>
+            <th>Optimized Room Requirement</th>
+            <th>OR-Days Saved</th>
+            <th>Anes-Days Saved</th>
+            <th>Out of Bounds Cases</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dr in dayResults %}
+            <tr>
+                <td>{{ dr.groupKey.site }}</td>
+                <td>{{ dr.groupKey.date }}</td>
+                <td>{{ dr.actualRoomsUsed | numberformat("#") }}</td>
+                <td>{{ dr.optimizedRoomsUsed is not null ? (dr.optimizedRoomsUsed | numberformat("#")) : "N/A" }}</td>
+                <td>{{ dr.roomsSavedDay | numberformat("#") }}</td>
+                <td>{{ dr.anesthesiaSavings.totalAnesthesiaSavings | numberformat("#") }}</td>
+                <td>
+                    {% set oobCount = 0 %}
+                    {% for case in dr.validCases %}
+                        {% if case.isOutOfBounds %}
+                            {% set oobCount = oobCount + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if oobCount > 0 %}
+                        <span class="pill warning">{{ oobCount }} flagged</span>
+                    {% else %}
+                        0
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

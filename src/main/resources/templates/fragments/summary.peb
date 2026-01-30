@@ -1,0 +1,173 @@
+<table style="width: auto; margin-bottom: 20px;">
+    <tr>
+        <th style="width:240px">Run Timestamp</th>
+        <td>{{ timestamp }}</td>
+    </tr>
+    <tr>
+        <th style="width:240px">Analysis Mode</th>
+        <td>Physical Occupancy Stacking</td>
+    </tr>
+    <tr>
+        <th style="width:240px">OR Capacity</th>
+        <td>{{ capacityText }}</td>
+    </tr>
+    {% if startTimePad is not null %}
+    <tr>
+        <th style="width:240px">Padding to each Start Time</th>
+        <td>{{ startTimePad }} minutes</td>
+    </tr>
+    {% endif %}
+    {% if endTimePad is not null %}
+    <tr>
+        <th style="width:240px">Padding to each End Time</th>
+        <td>{{ endTimePad }} minutes</td>
+    </tr>
+    {% endif %}
+    {% if anesPaddingMinutes is not null and anesPaddingMinutes > 0 %}
+    <tr>
+        <th style="width:240px">Anesthesia Block Padding</th>
+        <td>{{ anesPaddingMinutes }} minutes</td>
+    </tr>
+    {% endif %}
+</table>
+
+<div class="stats-container">
+    <div class="stat-box">
+        <div class="stat-value" style="color: #10b981;">{{ (extraCrnaHours | default(0)) | numberformat("#") }}</div>
+        <div class="stat-label">CRNA Hours Saved</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" style="color: #64748b;">{{ (totalCrnaHours | default(0)) | numberformat("#") }}</div>
+        <div class="stat-label">Scheduled CRNA (Supply)</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" style="color: #3b82f6;">{{ (crnaCurrentUtil | default(0)) | numberformat("#") }}%</div>
+        <div class="stat-label">Current CRNA Util</div>
+    </div>
+</div>
+
+<div class="stats-container">
+    <div class="stat-box">
+        <div class="stat-value" style="color: #10b981;">{{ (globalAnesthesia.totalAnesthesiaSavings | default(0)) }}</div>
+        <div class="stat-label">Anes-Days Saved</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" style="color: #64748b;">{{ (totalAnesthesiologistsGlobal | default(0)) | numberformat("#") }}</div>
+        <div class="stat-label">Total Anes-Days</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" style="color: #3b82f6;">{{ (laborYield | default(0)) | numberformat("#") }}%</div>
+        <div class="stat-label">Current Anes Util</div>
+    </div>
+</div>
+
+<div class="stats-container">
+    <div class="stat-box">
+        <div class="stat-value" style="color: #10b981;">{{ (totalRoomsSavedGlobal | default(0)) | numberformat("#") }}</div>
+        <div class="stat-label">OR-Days Saved</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" style="color: #64748b;">{{ (totalRoomDaysGlobal | default(0)) | numberformat("#") }}</div>
+        <div class="stat-label">Total OR-Days</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value" style="color: #3b82f6;">{{ (globalStats.primeTimeUtilization | default(0)) | numberformat("#") }}%</div>
+        <div class="stat-label">Current OR Util</div>
+    </div>
+</div>
+
+<div class="stats-container">
+    <div class="stat-box" style="background-color: #2563eb; color: white; border: none; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <div class="stat-value" style="color: white; font-size: 2em; margin-bottom: 0;">
+            {% if annualOpportunity >= 1000000 %}
+                ${{ (annualOpportunity / 1000000.0) | numberformat("#") }} M
+            {% else %}
+                ${{ annualOpportunity | numberformat("#,###") }}
+            {% endif %}
+        </div>
+        <div class="stat-label" style="color: #dbeafe; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;">Annual Savings Opportunity</div>
+        <div style="font-size: 0.7em; margin-top: 8px; opacity: 0.9; line-height: 1.2; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px;">
+            Projection: {{ annualizationFactor | numberformat("#") }}x ({{ analyzedDays }} days)
+            <br>Period: {{ startDate }} to {{ endDate }}
+        </div>
+    </div>
+</div>
+
+<div class="stats-container">
+    <div class="stat-box">
+        <div class="stat-value">{{ siteCount }}</div>
+        <div class="stat-label">Sites</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value">{{ regionsCount }}</div>
+        <div class="stat-label">Regions</div>
+    </div>
+    <div class="stat-box">
+        <div class="stat-value">{{ roomCount }}</div>
+        <div class="stat-label">Physical ORs</div>
+    </div>
+</div>
+
+<h2>Overall Dataset Summary</h2>
+<table style="width: auto;">
+    <tr>
+        <th style="width:240px">Cases Analyzed</th>
+        <td>{{ globalStats.totalProcedures }}</td>
+    </tr>
+    {% if invalidRows is not null and not (invalidRows is empty) %}
+    <tr>
+        <th style="width:240px">Cases Ignored (data errors)</th>
+        <td>{{ invalidRows | length }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th style="width:240px">Total OR-Days</th>
+        <td>{{ (totalRoomDaysGlobal | default(0)) | numberformat("#") }}</td>
+    </tr>
+    <tr>
+        <th style="width:240px">Site-days Processed</th>
+        <td>{{ siteDays }}</td>
+    </tr>
+    <tr>
+        <th style="width:240px">Site-days with Savings Opportunity</th>
+        <td>
+            <span class="pill bad">
+                <b>{{ siteDaysEliminable }}</b> / {{ siteDays }}
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <th style="width:240px">OR-Days Saved</th>
+        <td>
+            <span class="pill"><b>{{ (totalRoomsSavedGlobal | default(0)) | numberformat("#") }}</b></span>
+        </td>
+    </tr>
+    <tr>
+        <th style="width:240px">Scheduled CRNA (Supply)</th>
+        <td>{{ (totalCrnaHours | default(0)) | numberformat("#") }} hours</td>
+    </tr>
+    <tr>
+        <th style="width:240px">CRNA Hours Saved</th>
+        <td>
+            <span class="pill"><b>{{ (extraCrnaHours | default(0)) | numberformat("#") }}</b></span>
+        </td>
+    </tr>
+    <tr>
+        <th style="width:240px">Anes-Days Saved</th>
+        <td>
+            <span class="pill"><b>{{ (globalAnesthesia.totalAnesthesiaSavings | default(0)) }}</b></span>
+        </td>
+    </tr>
+    <tr>
+        <th style="width:240px">Total Anes-Days</th>
+        <td>{{ (totalAnesthesiologistsGlobal | default(0)) | numberformat("#") }}</td>
+    </tr>
+    <tr>
+        <th style="width:240px">Variance Recovery Savings</th>
+        <td>
+            <span class="pill warning"><b>${{ globalStats.totalCostOfVariance | numberformat("#,###") }}</b></span>
+        </td>
+    </tr>
+</table>
+
+<h2>Site Performance & Utilization Breakdown</h2>

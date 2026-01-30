@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFO Audit & Verification Guide - smAIrtRx OR</title>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; line-height: 1.6; color: #1e293b; max-width: 900px; margin: 0 auto; padding: 40px 20px; background-color: #f8fafc; }
+        .container { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { color: #0f172a; font-size: 2.25rem; font-weight: 800; border-bottom: 4px solid #3b82f6; padding-bottom: 12px; margin-bottom: 32px; }
+        h2 { color: #2563eb; font-size: 1.5rem; margin-top: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+        .math-box { background: #f1f5f9; padding: 24px; border-radius: 12px; border-left: 6px solid #3b82f6; margin: 20px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; }
+        .step-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .highlight { font-weight: bold; color: #0f172a; }
+        .formula { background: #0f172a; color: #f8fafc; padding: 15px; border-radius: 8px; display: block; margin: 10px 0; }
+        .success { color: #059669; font-weight: 700; }
+        code { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        .footer { margin-top: 60px; padding: 24px; background: #64748b; color: white; border-radius: 12px; text-align: center; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CFO Audit & Verification Guide</h1>
+        
+        <p>This guide provides the transparency and instructions required to verify the smAIrtRx optimization engine's calculations. By following these steps, you can manually reconcile the "CRNA Hours Saved" metric using your raw data files in Excel.</p>
+
+        <h2>1. Core Methodology</h2>
+        <p>The system identifies CRNA efficiency by comparing <span class="highlight">Effective Supply</span> (adjusted for productivity) against <span class="highlight">Clinical Demand</span> (actual surgical duration). This analysis is performed at the <span class="highlight">Region-Date</span> level.</p>
+        
+        <div class="math-box">
+            <span class="highlight">Formula:</span><br>
+            1. Total Scheduled Hours × Productivity Factor ({{ crnaProductivityFactor }}) = <span class="success">Effective Supply</span><br>
+            2. SUM(Anesthesia Minutes) / 60 = <span class="success">Clinical Demand Hours</span><br>
+            3. Effective Supply - Demand = <span class="highlight">CRNA Hours Saved</span>
+        </div>
+
+        <h2>2. Manual Verification Instructions (Excel)</h2>
+        <div class="step-card">
+            <h3>Step A: Calculate Supply</h3>
+            <p>1. Open <code>crna_musc.csv</code> in Excel.</p>
+            <p>2. Filter by <span class="highlight">Region</span> (e.g., "Columbia") and <span class="highlight">Date</span> (e.g., "8/25/25").</p>
+            <p>3. Sum the <span class="highlight">Duration</span> column. Multiply the total by <span class="highlight">{{ crnaProductivityFactor }}</span>.</p>
+        </div>
+
+        <div class="step-card">
+            <h3>Step B: Calculate Demand</h3>
+            <p>1. Open <code>case_musc.csv</code> in Excel.</p>
+            <p>2. Filter by <span class="highlight">Date</span> ("8/25/2025") and the Sites associated with that region.</p>
+            <p>3. Sum the <span class="highlight">Duration_Minutes</span> column. Divide by <span class="highlight">60</span> to get hours.</p>
+        </div>
+
+        <h2>3. Audit Sample #1: Columbia (8/25/2025)</h2>
+        <div class="math-box">
+            <span class="highlight">Raw Data Points:</span><br>
+            • Scheduled Hours: 142.0 (from 18 providers)<br>
+            • Productivity Factor: 75%<br>
+            • Anesthesia Minutes: 5,811 (from 50 cases)<br><br>
+            
+            <span class="highlight">Execution:</span><br>
+            • Effective Supply: 142.0 × 0.75 = <span class="success">106.50 Hours</span><br>
+            • Clinical Demand: 5,811 / 60 = <span class="success">96.85 Hours</span><br>
+            • Savings Identification: 106.50 - 96.85 = <span class="highlight">9.65 CRNA Hours Saved</span>
+        </div>
+
+        <h2>4. Audit Sample #2: Lancaster (8/25/2025)</h2>
+        <div class="math-box">
+            <span class="highlight">Raw Data Points:</span><br>
+            • Scheduled Hours: 36.0 (from 4 providers)<br>
+            • Productivity Factor: 75%<br>
+            • Anesthesia Minutes: 2,246 (from 31 cases)<br><br>
+            
+            <span class="highlight">Execution:</span><br>
+            • Effective Supply: 36.0 × 0.75 = <span class="success">27.00 Hours</span><br>
+            • Clinical Demand: 2,246 / 60 = <span class="success">37.43 Hours</span><br>
+            • Savings Identification: 27.00 - 37.43 = <span class="highlight">0 Hours Saved</span> (Demand exceeded supply)
+        </div>
+
+        <h2>5. Automated Sample Verification</h2>
+        <p>You can run these specific samples through the engine using the provided sample files:</p>
+        <ul>
+            <li><strong>OR Case File:</strong> <code>src/main/resources/data/samples/case_musc_sample.csv</code></li>
+            <li><strong>CRNA Schedule:</strong> <code>src/main/resources/data/samples/crna_musc_sample.csv</code></li>
+        </ul>
+        <p>When analyzed, the <strong>Brief Report</strong> will reflect the aggregated savings from these two regional pools, proving the mathematical accuracy of the Java Analytical Engine.</p>
+
+        <div class="footer">
+            HEalLTHCaiRE.ai | smAIrtRx - OR Schedule Optimization Engine | Enterprise v1.7
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+    <section id="site-performance-matrix">
+        <h3>Site Performance Matrix</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Site Name</th>
+                    <th>Actual OR-Days</th>
+                    <th>OR-Days Saved</th>
+                    <th>CRNA Hours Saved</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ss in siteStats %}
+                <tr>
+                    <td>{{ ss.name }}</td>
+                    <td>{{ ss.totalRoomDays | default(0) }}</td>
+                    <td>{{ ss.maxUniqueOrs | default(0) }}</td>
+                    <td>{{ (ss.extraCrnaHours | default(0)) | numberformat("#") }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section id="crna-savings-graphs">
+        <h3>CRNA Hours Saved Analysis</h3>
+        <p class="disclaimer">Sites with no CRNA hours saved are not graphed.</p>
+        
+        {% for ss in siteStats %}
+            {% if ss.extraCrnaHours > 0.5 %}
+            <div class="chart-container">
+                <canvas id="crna_chart_{{ siteToCanvasId[ss.name] }}"></canvas>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </section>
+
+<h2>Weekly Summary</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Week</th>
+            <th>Site</th>
+            <th>Days</th>
+            <th>Total Cases</th>
+            <th>ORs used</th>
+            <th>Total OR-days Saved</th>
+            <th>actual utilization (%)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for weekGroup in weekSummariesByWeek %}
+            {% set weekTotalRoomsSaved = 0 %}
+            {% set weekTotalRoomsUsed = 0 %}
+            {% set weekTotalMinutes = 0 %}
+            {% set weekTotalCapacityMinutes = 0 %}
+
+            {% for ws in weekGroup.value %}
+                {% if not isLowDetail or ws.totalRoomsSaved > 0 %}
+                    <tr>
+                        <td>{{ ws.weekKey.week }}</td>
+                        <td>{{ ws.weekKey.site }}</td>
+                        <td>{{ ws.daysCount }}</td>
+                        <td>{{ ws.totalCases }}</td>
+                        <td>{{ ws.sumActualRoomsUsed }}</td>
+                        <td>{{ ws.totalRoomsSaved }}</td>
+                        <td>
+                            {% if ws.totalCapacityMinutes > 0 %}
+                                {{ (ws.totalMinutes * 100.0 / ws.totalCapacityMinutes) | numberformat("#.0") }}%
+                            {% else %}
+                                0.0%
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% set weekTotalRoomsSaved = weekTotalRoomsSaved + ws.totalRoomsSaved %}
+                    {% set weekTotalRoomsUsed = weekTotalRoomsUsed + ws.sumActualRoomsUsed %}
+                    {% set weekTotalMinutes = weekTotalMinutes + ws.totalMinutes %}
+                    {% set weekTotalCapacityMinutes = weekTotalCapacityMinutes + ws.totalCapacityMinutes %}
+                {% endif %}
+            {% endfor %}
+
+            <tr style="font-weight: bold; background-color: #e9ecef;">
+                <td colspan="4">Total for Week {{ weekGroup.key }}</td>
+                <td>{{ weekTotalRoomsUsed }}</td>
+                <td>{{ weekTotalRoomsSaved }}</td>
+                <td>
+                    {% if weekTotalCapacityMinutes > 0 %}
+                        {{ (weekTotalMinutes * 100.0 / weekTotalCapacityMinutes) | numberformat("#.0") }}%
+                    {% else %}
+                        0.0%
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating Room Savings Methodology - smAIrtRx OR Optimizer</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f8fafc;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        h1 {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            border-left: 6px solid #f59e0b;
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #d97706;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        .highlight-box {
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-weight: 500;
+            color: #92400e;
+        }
+        .formula-card {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .formula-title {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+        code {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            background-color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+        .math {
+            font-family: 'JetBrains Mono', monospace;
+            display: block;
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 12px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #64748b;
+            color: #ffffff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Operating Room Savings Methodology</h1>
+        
+        <p>This document provides a high-level picture and detailed validation of the calculation methodology used by the smAIrtRx OR Optimizer to determine physical Operating Room consolidation opportunities. The system uses advanced temporal packing to minimize the physical resource footprint required for a given surgical volume.</p>
+
+        <div class="highlight-box">
+            <h2>Operational Capacity (Soft Savings)</h2>
+            <p>OR savings are categorized as <strong>Operational Capacity Recovery (Soft Savings)</strong>. Unless a surgical wing is physically closed, this represents reclaimed clinical capacity that allows the health system to grow volume without increasing fixed overhead.</p>
+            <p>Optimization is driven by physical room occupancy (Patient In/Out times). Each Operating Room is treated as a "bin" with a fixed capacity (standard 480 minutes). We use a high-precision bin-packing algorithm (Google OR-Tools) to determine the minimum physical footprint required to support surgical volume. 'ORs Saved' is the difference between the actual number of unique ORs used that day and this optimized minimum.</p>
+        </div>
+
+        <h2>Optimization Logic</h2>
+        
+        <div class="formula-card">
+            <span class="formula-title">1. Physical Occupancy Stacking (Bin-Packing)</span>
+            <p>Each OR is treated as a "bin" with a fixed daily capacity (standard 480 minutes). The system uses a <strong>First-Fit Decreasing (FFD)</strong> algorithm to determine the minimum number of physical rooms required.</p>
+            <div class="math">Actual Unique ORs - Optimized Minimum ORs = OR-Days Saved</div>
+        </div>
+
+        <div class="formula-card">
+            <span class="formula-title">2. Asset Utilization %</span>
+            <p>Utilization is measured against the *optimized* footprint, reflecting the efficiency of the new proposed schedule compared to the historical baseline.</p>
+            <div class="math">SUM(Patient_Out - Patient_In + Padding) / (Optimized ORs × Capacity) = Asset Utilization</div>
+        </div>
+
+        <h2>Data Integrity & Constraints</h2>
+        <ul>
+            <li><strong>Safety Padding:</strong> Total case durations include configurable <code>Start_Time_Pad</code> and <code>End_Time_Pad</code> (e.g., 10-15 minutes each) to account for OR turnover, cleaning, and preparation.</li>
+            <li><strong>Temporal Constraints:</strong> The model strictly prohibits overlaps within a single room. Cases are shifted within the day's boundaries to find the most compact arrangement.</li>
+            <li><strong>CFO Verification:</strong> Every consolidation is mathematically proven by identifying specific cases that were shifted and confirming the safety of the resulting "idle" room.</li>
+        </ul>
+
+        <h2>CFO Verification Sample</h2>
+        <p>Example of physical OR elimination (Actual dataset proof):</p>
+        <ul>
+            <li><strong>Site:</strong> FM MAIN OR</li>
+            <li><strong>Baseline:</strong> 15 ORs were used on 2025-09-10.</li>
+            <li><strong>Discovery:</strong> 3 ORs had minimal workload (e.g., OR 7 had 1 procedure of 45 mins).</li>
+            <li><strong>Consolidation:</strong> Those procedures were safely shifted into open gaps in ORs 1-12.</li>
+            <li><strong>Result:</strong> <strong>3 OR-Days Saved</strong> for that date.</li>
+        </ul>
+
+        <div class="footer">
+            HEalLTHCaiRE.ai | smAIrtRx - OR Schedule Optimization Engine | Enterprise v1.7
+        </div>
+    </div>
+</body>
+</html>

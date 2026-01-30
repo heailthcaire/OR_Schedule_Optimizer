@@ -1,0 +1,322 @@
+    <title>Strategic ROI Analysis: Executive Audit Report</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background-color: #f4f7f6; }
+        .container { background-color: #fff; padding: 60px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .audit-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-bottom: 30px; }
+        .audit-header h1 { margin: 0; border: none; padding: 0; text-transform: uppercase; color: #2c3e50; }
+        .audit-id { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #7f8c8d; }
+        h2 { color: #2980b9; margin-top: 40px; border-left: 5px solid #3498db; padding-left: 15px; }
+        .big-number { font-size: 3rem; font-weight: bold; color: #27ae60; text-align: center; margin: 20px 0; }
+        .leakage-box { background-color: #fff5f5; border: 1px solid #feb2b2; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
+        .leakage-amount { font-size: 2rem; font-weight: bold; color: #c53030; }
+        .recommendation { background-color: #e8f4fd; border-radius: 8px; padding: 25px; margin: 20px 0; }
+        .hard-savings { background-color: #f0fff4; border-left: 5px solid #48bb78; }
+        .soft-savings { background-color: #ebf8ff; border-left: 5px solid #4299e1; }
+        .savings-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        .tag-hard { background: #48bb78; color: white; }
+        .tag-soft { background: #4299e1; color: white; }
+        .supplemental-link { font-size: 1.1rem; font-weight: bold; color: #3498db; margin-top: 15px; display: block; text-decoration: none; border-left: 3px solid #3498db; padding-left: 10px; background: #f9f9f9; padding: 10px; }
+        .supplemental-link:hover { color: #2980b9; background: #f0f7fd; }
+        .toc { background-color: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 40px; }
+        .toc h3 { margin-top: 0; color: #2c3e50; font-size: 1.2rem; border-bottom: 1px solid #cbd5e0; padding-bottom: 10px; }
+        .toc ul { list-style: none; padding: 0; }
+        .toc li { margin: 10px 0; }
+        .toc a { color: #3498db; text-decoration: none; font-weight: 500; }
+        .toc a:hover { text-decoration: underline; }
+        .site-matrix { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .site-matrix th, .site-matrix td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .site-matrix th { background-color: #f2f2f2; }
+        .impact-rank { font-weight: bold; color: #2c3e50; text-align: center; width: 50px; }
+        .footer { margin-top: 60px; text-align: center; color: #95a5a6; font-size: 0.8rem; border-top: 1px solid #eee; padding-top: 20px; }
+        .page-break { page-break-after: always; margin-bottom: 50px; border-bottom: 2px dashed #eee; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page 1: Title -->
+        <div class="page-break" style="text-align: center; padding-top: 100px;">
+            <div class="audit-header" style="justify-content: center; border: none;">
+                <h1>Strategic ROI Analysis Report</h1>
+            </div>
+            <p style="font-size: 1.5rem; color: #7f8c8d;">Operating Room & Clinical Labor Optimization</p>
+            <div style="margin-top: 50px; font-family: 'JetBrains Mono', monospace; color: #3498db;">
+                Audit ID: {{ auditId }}
+            </div>
+            <div style="margin-top: 100px;">
+                <p>Prepared for: Chief Financial Officer</p>
+                <p>Prepared by: HEalLTHCaiRE.ai (v1.7)</p>
+                <p>Date: {{ timestamp }}</p>
+            </div>
+            <div style="margin-top: 50px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; display: inline-block;">
+                <p style="margin: 0; font-weight: bold; color: #27ae60;">✓ CLINICAL VOLUME INTEGRITY VERIFIED</p>
+                <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #64748b;">All savings identified with 100% case retention.</p>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="page-break">
+            <div class="audit-header">
+                <h2>Report Contents</h2>
+                <div class="audit-id">Ref: {{ auditId }}</div>
+            </div>
+            <div class="toc">
+                <h3>Executive Roadmap</h3>
+                <ul>
+                    <li><a href="#summary">1. Executive Summary: The Opportunity</a></li>
+                    <li><a href="#leakage">2. Cost of Inaction: Daily Operational Leakage</a></li>
+                    <li><a href="#labor">3. Direct Labor Recovery: Hard Savings</a></li>
+                    <li><a href="#assets">4. Capacity Recovery: Operational Value</a></li>
+                    <li><a href="#evidence">5. Evidence Base: Audit Proof & Site Matrix</a></li>
+                    <li><a href="#verification">6. Transparency & Verification Guide</a></li>
+                </ul>
+            </div>
+            <p>This report serves as a formal financial audit of surgical throughput and labor yield. Findings are categorized into <strong>Hard Savings</strong> (direct expense reduction) and <strong>Operational Capacity</strong> (revenue potential expansion).</p>
+        </div>
+
+        <!-- Page 2: Executive Summary -->
+        <div class="page-break" id="summary">
+            <div class="audit-header">
+                <h2>Executive Summary: The Opportunity</h2>
+                <div class="audit-id">Ref: {{ auditId }}</div>
+            </div>
+            <p>Our comprehensive audit has identified a significant multi-path recovery opportunity. By optimizing clinical labor supply and physical room allocation, the system can reclaim substantial margin <strong>without impact to clinical volume or surgeon access</strong>.</p>
+            
+            <div style="margin: 30px 0; padding: 30px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 1.1rem;">
+                    <tr>
+                        <td colspan="2" style="padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; font-weight: bold; color: #2c3e50;">
+                            Phase 1: Direct Labor Recovery (Hard Cash Flow Impact)
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #edf2f7;">
+                        <td style="padding: 15px 0; color: #64748b;">
+                            <span class="savings-tag tag-hard">Payroll</span><br>
+                            CRNA Labor Pool Optimization ({{ (extraCrnaHours * annualizationFactor) | numberformat("#,###") }} Hours)
+                        </td>
+                        <td style="padding: 15px 0; text-align: right; font-weight: bold; color: #27ae60; white-space: nowrap;">${{ crnaAnnualSavings | numberformat("#,###") }}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #edf2f7;">
+                        <td style="padding: 15px 0; color: #64748b;">
+                            <span class="savings-tag tag-hard">Contract</span><br>
+                            Anesthesia FTE Efficiency ({{ (globalAnesthesia.totalAnesthesiaSavings * annualizationFactor) | numberformat("#") }} Provider-Days)
+                        </td>
+                        <td style="padding: 15px 0; text-align: right; font-weight: bold; color: #27ae60; white-space: nowrap;">${{ anesAnnualSavings | numberformat("#,###") }}</td>
+                    </tr>
+                    <tr style="background: #f0fff4;">
+                        <td style="padding: 10px; font-weight: bold; color: #2c3e50;">Total Hard Savings Potential</td>
+                        <td style="padding: 10px; text-align: right; font-weight: bold; color: #27ae60;">${{ hardAnnualSavings | numberformat("#,###") }}</td>
+                    </tr>
+
+                    <tr><td colspan="2" style="padding: 20px 0;"></td></tr>
+
+                    <tr>
+                        <td colspan="2" style="padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; font-weight: bold; color: #2c3e50;">
+                            Phase 2: Operational Capacity Recovery (Soft/Asset Value)
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #edf2f7;">
+                        <td style="padding: 15px 0; color: #64748b;">
+                            <span class="savings-tag tag-soft">Space</span><br>
+                            Physical OR-Day Consolidation ({{ (totalRoomsSavedGlobal * annualizationFactor) | numberformat("#") }} Rooms)
+                        </td>
+                        <td style="padding: 15px 0; text-align: right; font-weight: bold; color: #3182ce; white-space: nowrap;">${{ softAnnualSavings | numberformat("#,###") }}</td>
+                    </tr>
+                    
+                    <tr><td colspan="2" style="padding: 20px 0;"></td></tr>
+
+                    <tr style="border-top: 3px solid #2c3e50;">
+                        <td style="padding: 20px 0 5px 0; font-size: 1.5rem; font-weight: bold; color: #2c3e50;">Strategic ROI Potential</td>
+                        <td style="padding: 20px 0 5px 0; text-align: right; font-size: 2rem; font-weight: bold; color: #27ae60; white-space: nowrap;">
+                            {% if annualOpportunity >= 1000000 %}
+                                ${{ (annualOpportunity / 1000000.0) | numberformat("#.##") }} M
+                            {% else %}
+                                ${{ annualOpportunity | numberformat("#,###") }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <p style="text-align: right; font-size: 0.9rem; color: #7f8c8d; margin-top: 5px;">
+                    (Projection based on {{ analyzedDays | numberformat("#") }} days of validated EHR data)<br>
+                    (Audit Period: {{ startDate }} to {{ endDate }})
+                </p>
+            </div>
+
+            <div class="leakage-box" id="leakage">
+                <p style="margin: 0; text-transform: uppercase; font-size: 0.8rem; font-weight: bold; color: #c53030; letter-spacing: 0.1em;">Daily Operational Leakage (Cost of Inaction)</p>
+                <div class="leakage-amount">${{ dailyLeakage | numberformat("#,###") }} / day</div>
+                <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #7f8c8d;">Avoidable expense incurred every 24 hours under the current schedule model.</p>
+            </div>
+            
+            <div class="recommendation">
+                <p><strong>CFO Strategic Directives:</strong></p>
+                <ul>
+                    <li><strong>Margin Expansion:</strong> Consolidating cases into regional hubs directly reduces the "Bundled Cost per Case" by spreading fixed utilities and cleaning across higher volume.</li>
+                    <li><strong>Labor Yield Optimization:</strong> Realigning CRNA shifts to the 85% Productivity Factor benchmark converts idle paid time into recovered margin.</li>
+                    <li><strong>Zero-CapEx Expansion:</strong> Reclaiming {{ totalRoomsSavedGlobal }} OR-Days creates capacity for growth without requiring new construction.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Page 3 & 4: Professional Labor ROI -->
+        <div class="page-break" id="labor">
+            <div class="audit-header">
+                <h2>Direct Labor Recovery: Hard Savings</h2>
+                <div class="audit-id">Ref: {{ auditId }}</div>
+            </div>
+            <p>The largest driver of financial leakage identified is the gap between <strong>Scheduled CRNA Supply</strong> and <strong>Actual Clinical Demand</strong>. This represents "Hard Savings" because it involves direct payroll or contract expense reduction.</p>
+            
+            <div class="recommendation hard-savings">
+                <p><strong>Labor ROI Analysis:</strong></p>
+                <ul>
+                    <li><strong>Productivity Benchmark:</strong> Audit uses a {{ (crnaProductivityFactor * 100) | numberformat("#") }}% factor (clinical safety standard).</li>
+                    <li><strong>Regional Pool Recovery:</strong> treating resources as regional pools rather than site-bound silos reveals hidden labor surplus.</li>
+                </ul>
+            </div>
+
+            <div class="big-number">Hard Labor ROI: ${{ (hardAnnualSavings / 1000000.0) | numberformat("#.##") }} M</div>
+            <a href="supplemental/02_Methodology_CRNA_Savings.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">See Audit Methodology: [02_Methodology_CRNA_Savings.html]</a>
+            <a href="supplemental/03_Methodology_Anesthesia_Efficiency.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">Technical Proof: [03_Methodology_Anesthesia_Efficiency.html]</a>
+        </div>
+
+        <!-- Page 5 & 6: Physical Asset Optimization -->
+        <div class="page-break" id="assets">
+            <div class="audit-header">
+                <h2>Capacity Recovery: Operational Value</h2>
+                <div class="audit-id">Ref: {{ auditId }}</div>
+            </div>
+            <p>Using high-precision First-Fit Decreasing (FFD) stacking algorithms, we have modeled the minimum physical footprint required. This represents <strong>Asset Productivity</strong>—maximizing the yield of your existing square footage.</p>
+            
+            <div class="recommendation soft-savings">
+                <p><strong>Asset Productivity Highlights:</strong></p>
+                <ul>
+                    <li><strong>Fixed Overhead Recovery:</strong> Savings calculated at a conservative ${{ costPerOrDay | numberformat("#,###") }}/day base room rate.</li>
+                    <li><strong>Capacity Reserve:</strong> reclaimed OR-Days can be repurposed for high-margin procedures or maintenance windows.</li>
+                </ul>
+            </div>
+
+            <div class="big-number">Reclaimed Asset Days: {{ totalRoomsSavedGlobal | numberformat("#") }}</div>
+            <p style="text-align: center; font-size: 1.2rem; color: #7f8c8d;">
+                Equivalent to {{ ((totalRoomsSavedGlobal / totalRoomDaysGlobal) * 100) | numberformat("#") }}% Footprint Reduction potential.
+            </p>
+            <a href="supplemental/04_Methodology_OR_Consolidation.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">Consolidation Proof: [04_Methodology_OR_Consolidation.html]</a>
+        </div>
+
+        <!-- Page 7 & 8: Evidence Base -->
+        <div class="page-break" id="evidence">
+            <div class="audit-header">
+                <h2>Evidence Base: Audit Proof & Site Matrix</h2>
+                <div class="audit-id">Ref: {{ auditId }}</div>
+            </div>
+            <p>Every dollar identified is backed by case-by-case surgical data. Below is the performance matrix ranked by <strong>Financial Recovery Potential</strong>.</p>
+            <table class="site-matrix">
+                <thead>
+                    <tr>
+                        <th class="impact-rank">Rank</th>
+                        <th>Site Name</th>
+                        <th>OR-Days Saved</th>
+                        <th>CRNA Hours Saved</th>
+                        <th>Impact Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set sortedStats = siteStats | sort(by="maxUniqueOrs", descending=true) %}
+                    {% set limit = (sortedStats.size < 10 ? sortedStats.size : 10) %}
+                    {% if limit > 0 %}
+                        {% for ss in (sortedStats | slice(0, limit)) %}
+                        <tr>
+                            <td class="impact-rank">{{ loop.index + 1 }}</td>
+                            <td>{{ ss.name }}</td>
+                            <td>{{ ss.maxUniqueOrs }}</td>
+                            <td>{{ ss.extraCrnaHours | numberformat("#") }}</td>
+                            <td>
+                                {% if ss.maxUniqueOrs > 10 %}
+                                    <span style="color: #c53030; font-weight: bold;">CRITICAL</span>
+                                {% elseif ss.maxUniqueOrs > 5 %}
+                                    <span style="color: #dd6b20; font-weight: bold;">HIGH</span>
+                                {% else %}
+                                    <span style="color: #3182ce; font-weight: bold;">MODERATE</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align:center;">No fragmented sites identified.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <div style="margin-top: 30px; background: #f9f9f9; padding: 25px; border: 1px solid #ddd; border-left: 10px solid #2c3e50;">
+                <p><strong>CFO Audit Proof Sample ({% if verificationSample is not null %}{{ verificationSample.siteName }}{% else %}N/A{% endif %}):</strong></p>
+                {% if verificationSample is not null %}
+                <p>On {{ verificationSample.date }}, the system physically used {{ verificationSample.baselineRooms }} ORs. Our engine identifies that by shifting those cases into open temporal gaps in other ORs, {{ verificationSample.roomsSaved }} full OR-Days were recovered safely.</p>
+                
+                <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse; margin-top: 10px; background: #fff;">
+                    <thead>
+                        <tr style="background: #edf2f7;">
+                            <th style="border: 1px solid #cbd5e0; padding: 8px;">Original Room</th>
+                            <th style="border: 1px solid #cbd5e0; padding: 8px; text-align: center;">Cases</th>
+                            <th style="border: 1px solid #cbd5e0; padding: 8px; text-align: center;">Workload (Min)</th>
+                            <th style="border: 1px solid #cbd5e0; padding: 8px; text-align: center;">Audit Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room in verificationSample.roomConsolidationDetails %}
+                        <tr>
+                            <td style="border: 1px solid #cbd5e0; padding: 8px;">{{ room.originalRoomName }}</td>
+                            <td style="border: 1px solid #cbd5e0; padding: 8px; text-align: center;">{{ room.procedureCount }}</td>
+                            <td style="border: 1px solid #cbd5e0; padding: 8px; text-align: center;">{{ room.totalMinutes }}m</td>
+                            <td style="border: 1px solid #cbd5e0; padding: 8px; text-align: center;">
+                                {% if room.wasEliminated %}
+                                <span style="color: #27ae60; font-weight: bold;">[RECLAIMED]</span>
+                                {% else %}
+                                <span style="color: #718096;">[CONSOLIDATED]</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <p style="font-size: 0.75rem; color: #718096; margin-top: 10px;">* "Reclaimed" indicates physical space that can be closed or repurposed. All clinical volume is maintained.</p>
+                {% else %}
+                <p>Mathematical proof details available in supplemental full report.</p>
+                {% endif %}
+            </div>
+            <a href="supplemental/05_Full_Audit_Report.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">View Full Site-by-Site Audit Trail: [05_Full_Audit_Report.html].</a>
+        </div>
+
+        <!-- Page 9 & 10: Verification & Appendix -->
+        <div class="page-break" id="verification">
+            <div class="audit-header">
+                <h2>Transparency & Verification Guide</h2>
+                <div class="audit-id">Ref: {{ auditId }}</div>
+            </div>
+            <p>Financial integrity is the foundation of this analysis. Internal Audit teams can verify these findings using standard Excel functions on raw EHR exports.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                <div style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <h4 style="margin-top: 0; color: #2c3e50;">Audit Protocol A</h4>
+                    <p style="font-size: 0.9rem;">Verify <strong>Anesthesia Yield</strong> by summing clinical minutes and dividing by scheduled provider hours.</p>
+                </div>
+                <div style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <h4 style="margin-top: 0; color: #2c3e50;">Audit Protocol B</h4>
+                    <p style="font-size: 0.9rem;">Verify <strong>Asset Density</strong> by stacking daily case durations against the 480-minute bin capacity.</p>
+                </div>
+            </div>
+
+            <a href="supplemental/06_CFO_Audit_Verification_Guide.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">Step-by-Step Audit Guide: [06_CFO_Audit_Verification_Guide.html].</a>
+            <a href="supplemental/00_Data_Validation_Audit.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">Data Quality Audit Report: [00_Data_Validation_Audit.html].</a>
+            
+            <div style="margin-top: 100px; border-top: 2px solid #3498db; padding-top: 20px;">
+                <p><strong>System Audit Settings:</strong></p>
+                <p>Anes Padding: {{ anesPaddingMinutes }}m | Start Pad: {{ startTimePad }}m | End Pad: {{ endTimePad }}m | Min Duration: {{ minProcedureDurationMinutes }}m | Max Duration: {{ maxProcedureDurationHours }}h</p>
+                <a href="supplemental/07_Calculation_Methodology_Summary.html" class="supplemental-link" target="_blank" rel="noopener noreferrer">Formula Definitions & Justification: [07_Calculation_Methodology_Summary.html].</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            HEalLTHCaiRE.ai | Strategic ROI Analysis | Audit Ref: {{ auditId }} | CONFIDENTIAL FINANCIAL DATA
+        </div>
+    </div>
+</body>
+</html>

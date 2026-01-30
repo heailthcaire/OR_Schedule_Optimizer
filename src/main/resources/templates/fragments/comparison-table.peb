@@ -1,0 +1,21 @@
+<h3>Top 10 Procedure Comparison (Across All Sites)</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Procedure</th>
+            <th>Global Mean (min)</th>
+            <th>Fastest Site (mean min)</th>
+            <th>Slowest Site (mean min)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pc in globalStats.procedureComparisons %}
+            <tr>
+                <td>{{ pc.procedure }}</td>
+                <td>{{ pc.globalMean | numberformat("#.0") }}</td>
+                <td>{{ pc.minSite }} ({{ pc.minMean | numberformat("#.0") }})</td>
+                <td>{{ pc.maxSite }} ({{ pc.maxMean | numberformat("#.0") }})</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

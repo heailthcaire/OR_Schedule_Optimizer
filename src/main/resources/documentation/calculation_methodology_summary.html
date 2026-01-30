@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculation Methodology Summary - smAIrtRx OR Optimizer</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #059669;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --formula-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-muted);
+            background-color: var(--bg);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 48px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 24px;
+        }
+
+        h1 {
+            color: var(--text-main);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            color: var(--text-main);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 24px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .methodology-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .methodology-card.crna { border-top: 6px solid var(--primary); }
+        .methodology-card.or { border-top: 6px solid var(--warning); }
+        .methodology-card.anes { border-top: 6px solid var(--success); }
+
+        h3 {
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+        }
+
+        .high-level-picture {
+            background-color: var(--bg);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            font-size: 0.9375rem;
+            color: var(--text-main);
+            border: 1px dashed var(--border);
+        }
+
+        .formula {
+            background: var(--formula-bg);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            margin-top: auto;
+        }
+
+        .key-calculations {
+            margin-top: 48px;
+        }
+
+        .calc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 24px;
+            background-color: #64748b;
+            color: #ffffff;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calculation Methodology Summary</h1>
+            <p class="subtitle">Comprehensive overview of the high-level optimization logic and key financial metrics.</p>
+        </header>
+
+        <section>
+            <h2>Optimization Methodologies</h2>
+            <div class="methodology-grid">
+                <!-- CRNA -->
+                <div class="methodology-card crna">
+                    <h3>CRNA Staffing</h3>
+                    <div class="high-level-picture">
+                        Calculated using a regional pool efficiency model, comparing actual hours worked to surgical demand. Accounts for clinical productivity and floats between facilities.
+                    </div>
+                    <p>Calculates surplus labor hours compared to raw anesthesia demand within a region. A <strong>Productivity Factor</strong> (default: 85%) is applied to raw supply to determine <em>Effective Supply</em>. Financial value is modeled at configurable hourly rates (default: $175/hr).</p>
+                    <div class="formula">CRNA Hours Saved × Hourly Rate = CRNA Hours Saved ($)</div>
+                </div>
+
+                <!-- OR -->
+                <div class="methodology-card or">
+                    <h3>Operating Room Consolidation</h3>
+                    <div class="high-level-picture">
+                        Driven by physical room occupancy. Each OR is a "bin" with fixed capacity (480m). High-precision bin-packing determines the minimum footprint needed.
+                    </div>
+                    <p>Determines the theoretical OR-Days that could have been avoided by optimizing temporal distribution of cases while prioritizing safety buffers.</p>
+                    <div class="formula">Baseline Rooms - Optimized Rooms = OR-Days Saved</div>
+                </div>
+
+                <!-- Anesthesia -->
+                <div class="methodology-card anes">
+                    <h3>Anesthesia Provider Efficiency</h3>
+                    <div class="high-level-picture">
+                        Aggregate of three paths: OR elimination, hours reduction, and schedule gap absorption. Identifies idle professional labor paid for but unused.
+                    </div>
+                    <p>Multi-path model identifying efficiency gains within individual schedules and across the facility using clinical timestamps. Categorized as <strong>Hard Savings</strong>.</p>
+                    <div class="formula">Method 1 + Method 2 + Method 3 = Anes-Days Saved</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="key-calculations">
+            <h2>Key Financial & Operational Metrics</h2>
+            
+            <div className="calc-card">
+                <h3>Annual Savings Opportunity</h3>
+                <p>The projected 12-month financial opportunity based on identified resource recovery across all paths. Projections are dynamically scaled based on the actual date range of the analyzed dataset.</p>
+                <div className="formula">Annual Savings = (Identified Savings) × (365.25 / Analyzed Days)</div>
+            </div>
+
+            <div class="calc-card">
+                <h3>Asset Utilization %</h3>
+                <p>Measures how much of the available physical room time is actually occupied by patients within the optimized footprint.</p>
+                <div class="formula">Utilization % = (SUM Patient Minutes) / (Optimized Rooms × Capacity)</div>
+            </div>
+
+            <div class="calc-card">
+                <h3>Labor Yield</h3>
+                <p>The ratio of actual clinical work (Anesthesia Time) compared to the total paid OR block time, representing professional ROI.</p>
+                <div class="formula">Labor Yield = (Anesthesia Minutes) / (Paid Block Minutes)</div>
+            </div>
+
+            <div class="calc-card">
+                <h3>Variance Recovery</h3>
+                <p>Financial opportunity identified by standardizing procedure durations to the institutional mean.</p>
+                <div class="formula">Variance = (Actual Duration - Benchmark Mean) × Cost per Minute</div>
+            </div>
+        </section>
+
+        <footer>
+            HEalLTHCaiRE.ai | smAIrtRx - OR Schedule Optimization Engine | Enterprise v1.7
+        </footer>
+    </div>
+</body>
+</html>

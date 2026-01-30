@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Guide - smAIrtRx OR Optimizer</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #f8fafc;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0f172a;
+            font-size: 2rem;
+            font-weight: 800;
+            border-bottom: 4px solid #3b82f6;
+            padding-bottom: 12px;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: -0.025em;
+        }
+        h2 {
+            color: #2563eb;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+        h2 .step-number {
+            background-color: #2563eb;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 1rem;
+        }
+        p {
+            margin-bottom: 16px;
+        }
+        .normal-case{
+            text-transform: none;
+        }
+
+        .instruction-card {
+            background-color: #f1f5f9;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border-left: 6px solid #3b82f6;
+        }
+        .screenshot {
+            width: 100%;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+        }
+        .screenshot-caption {
+            display: block;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: -10px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        .tip {
+            background-color: #ecfdf5;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+            margin-top: 16px;
+            font-size: 0.9rem;
+        }
+        .tip-title {
+            font-weight: 800;
+            color: #065f46;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 48px;
+            padding: 24px;
+            background-color: #64748b;
+            color: #ffffff;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="normal-case">smAIrtRx OR Optimizer User Guide</span></h1>
+        
+        <p>Welcome to the smAIrtRx OR Schedule Optimizer. This guide will walk you through the primary workflow to analyze your Operating Room utilization and discover efficiency opportunities.</p>
+
+        <h2><span class="step-number">1</span> Open a File</h2>
+        <div class="instruction-card">
+            <p>Navigate to the <strong>Add Data</strong> tab in the sidebar. Click on the upload area or drag and drop your OR utilization CSV file.</p>
+            <img src="images/Add%20Data%20-%20No%20Files%20Selected.png" alt="Add Data - Initial State" class="screenshot">
+            <span class="screenshot-caption">Initial Startup Screen: Ready to ingest surgical case data.</span>
+            
+            <div class="tip">
+                <span class="tip-title">Pro Tip</span>
+                Ensure your CSV contains the required columns such as <code>Case_ID</code>, <code>Date</code>, <code>Site</code>, and <code>Patient_In/Out</code> times.
+            </div>
+        </div>
+
+        <h2><span class="step-number">2</span> Validate File</h2>
+        <div class="instruction-card">
+            <p>Once a file is loaded, click the <strong>Validate File</strong> button. The system will scan your data for structural errors, missing headers, or logical inconsistencies (e.g., overlapping cases in the same room).</p>
+            <img src="images/Add%20Data%20-%20Files%20Validated.png" alt="Add Data - Validated" class="screenshot">
+            <span class="screenshot-caption">Data Validation: Identifying structural issues and data quality.</span>
+
+            <p>Review the validation report. If major errors are found, you may need to click <strong>Clean & Normalize</strong> to automatically fix common issues before proceeding.</p>
+        </div>
+
+        <h2><span class="step-number">3</span> Analyze File</h2>
+        <div class="instruction-card">
+            <p>After successful validation, click <strong>Run Optimization Analysis</strong>. The Java-based optimization engine (powered by Google OR-Tools) will process your schedule to find the minimum number of ORs required to support your volume.</p>
+            <img src="images/OR%20Summary.png" alt="OR Summary Dashboard" class="screenshot">
+            <span class="screenshot-caption">OR Summary Dashboard: Aggregated savings and efficiency metrics.</span>
+            
+            <p>Once complete, you will be automatically redirected to the <strong>Report</strong> to view the executive summary.</p>
+        </div>
+
+        <h2><span class="step-number">4</span> Staff Analysis</h2>
+        <div class="instruction-card">
+            <p>The <strong>Staff</strong> tab provides a deep dive into anesthesia staffing efficiency, separating clinical demand from scheduled supply across regional pools. You can also adjust the CRNA Hourly Rate slider to see direct financial impacts.</p>
+            <img src="images/Staff%20Reduction.png" alt="Staff Reduction Screen" class="screenshot">
+            <span class="screenshot-caption">Staffing Analysis: Identifying professional labor efficiency.</span>
+        </div>
+
+        <h2><span class="step-number">5</span> Site Deep-Dive</h2>
+        <div class="instruction-card">
+            <p>Use the <strong>Site Deep-Dive</strong> visualizer to see exactly how cases were moved to consolidate rooms. This interactive view allows you to verify the solver's decisions for any site and date.</p>
+            <img src="images/Site%20Deep-Dive.png" alt="Site Deep-Dive Visualizer" class="screenshot">
+            <span class="screenshot-caption">Visual Packing: A detailed view of case consolidation.</span>
+        </div>
+
+        <h2><span class="step-number">6</span> What-If Analysis</h2>
+        <div class="instruction-card">
+            <p>Switch to the <strong>What-If Analysis</strong> tab. Here you can adjust key parameters to see their impact on savings in real-time:</p>
+            <img src="images/What-If%20Analysis.png" alt="What-If Analysis modeling" class="screenshot">
+            <span class="screenshot-caption">Scenario Modeling: Real-time simulation of different operational constraints.</span>
+
+            <ul>
+                <li><strong>OR Day Capacity:</strong> Change the standard workday length (e.g., 8 hours vs. 10 hours).</li>
+                <li><strong>Start/End Padding:</strong> Adjust the buffer time required for turnovers.</li>
+                <li><strong>Anesthesia Staffing:</strong> Toggle specific staffing roles (Anesthesiologists, CRNAs) and optimization methods (Absorption, FTE Efficiency) to see the financial impact.</li>
+                <li><strong>CRNA Parameters:</strong> Adjust the productivity factor (default 85%) and hourly rate to align with regional labor market conditions.</li>
+            </ul>
+            <p>Click <strong>Update Statistics</strong> after changing physical constraints (like Capacity or Padding) to re-run the solver.</p>
+        </div>
+
+        <h2><span class="step-number">7</span> Reporting</h2>
+        <div class="instruction-card">
+            <p>The system provides two levels of reporting:</p>
+            <ul>
+                <li><strong>Brief Report:</strong> A high-level executive summary designed for quick distribution.</li>
+                <img src="images/Brief%20Report.png" alt="Brief Report View" class="screenshot">
+                <span class="screenshot-caption">Brief Report: Key operational and financial indicators.</span>
+
+                <li><strong>Full Report:</strong> A comprehensive audit-ready document containing mathematical proofs and site-by-site breakdowns.</li>
+                <img src="images/Full%20Report.png" alt="Full Audit Report View" class="screenshot">
+                <span class="screenshot-caption">Full Audit Report: Deep-dive verification for hospital leadership.</span>
+
+                <li><strong>Strategic CFO Package:</strong> Click <strong>Export CFO Report</strong> to generate a board-ready ZIP archive including specialized roadmap summaries, "Hard vs. Soft" savings analysis, and a cost-of-inaction (Daily Leakage) report.</li>
+            </ul>
+        </div>
+
+        <h2><span class="step-number">8</span> Calculation Methodology</h2>
+        <div class="instruction-card">
+            <p>For complete transparency, the <strong>Calculations</strong> screen provides the exact formulas used to derive every metric in the application.</p>
+            <img src="images/Calculation%20Methods.png" alt="Calculation Methodology" class="screenshot">
+            <span class="screenshot-caption">Technical Documentation: Ensuring confidence in the underlying math.</span>
+        </div>
+
+        <h2><span class="step-number">9</span> System Configuration</h2>
+        <div class="instruction-card">
+            <p>Navigate to the <strong>Settings</strong> tab to manage persistent system configuration:</p>
+            <img src="images/Settings.png" alt="Settings Configuration" class="screenshot">
+            <span class="screenshot-caption">Global Configuration: Mapping headers and setting financial defaults.</span>
+
+            <ul>
+                <li><strong>Column Mapping:</strong> Map your specific CSV headers to the system's expected fields.</li>
+                <li><strong>Financial Defaults:</strong> Set the baseline daily rates for OR rooms, providers, and configurable CRNA hourly rates.</li>
+                <li><strong>Regional Clusters:</strong> Define groups of sites that can share resources for hub-and-spoke optimization.</li>
+                <li><strong>CFO Report Path:</strong> Customize the output location for the board-ready strategic report package.</li>
+            </ul>
+            <p>Click <strong>Save Configuration</strong> to apply these changes across the entire application.</p>
+        </div>
+
+        <div class="footer">
+            HEalLTHCaiRE.ai | smAIrtRx - OR Schedule Optimization Engine | Enterprise v1.7
+        </div>
+    </div>
+</body>
+</html>
